@@ -6,7 +6,7 @@ const badges = [
 
 export default function FinalCTA() {
   return (
-    <section className="bg-[#0F1C3F]" style={{ paddingTop: 10, paddingBottom: 10 }}>
+    <section className="bg-[#0F1C3F]" style={{ paddingTop: 40, paddingBottom: 40 }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
           Ready for a Cleaner Home?

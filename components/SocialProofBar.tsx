@@ -43,7 +43,7 @@ const stats = [
 
 export default function SocialProofBar() {
   return (
-    <section className="bg-[#ebebeb] border-y border-gray-200" style={{ paddingTop: 5, paddingBottom: 5 }}>
+    <section className="bg-[#ebebeb] border-y border-gray-200" style={{ paddingTop: 5, paddingBottom: 80 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map(stat => (

@@ -22,33 +22,25 @@ export default function Header() {
         scrolled ? 'shadow-md' : ''
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="h-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        <div className="flex items-center justify-between">
+          <div className="h-16">
             <Image
               src="/TidyWay - Logo - Copy.png"
               alt="TidyWay Logo"
-              height={56}
-              width={150}
+              height={64}
+              width={170}
               className="object-contain"
               priority
             />
           </div>
 
-          <div className="flex items-center gap-4">
-            <a
-              href="tel:+12260000000"
-              className="hidden md:block text-[#0F1C3F] font-semibold text-sm hover:text-[#2DD4A7] transition-colors"
-            >
-              (226) XXX-XXXX
-            </a>
-            <button
-              onClick={scrollToForm}
-              className="bg-[#2DD4A7] hover:bg-[#22c497] text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap"
-            >
-              Get My Free Quote
-            </button>
-          </div>
+          <button
+            onClick={scrollToForm}
+            className="bg-[#2DD4A7] hover:bg-[#22c497] text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap"
+          >
+            Get My Free Quote
+          </button>
         </div>
       </div>
     </header>

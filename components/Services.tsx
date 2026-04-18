@@ -68,9 +68,9 @@ export default function Services() {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-[#2DD4A7] text-xs font-extrabold uppercase tracking-widest mb-3 block">
+          <div className="inline-block bg-[#0F1C3F] text-[#2DD4A7] text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-full mb-4">
             Our Services
-          </span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F] mb-4">
             Everything We Clean in London, Ontario
           </h2>
@@ -87,8 +87,8 @@ export default function Services() {
               key={service.title}
               className="bg-white border border-gray-100 rounded-2xl p-7 hover:shadow-lg hover:border-[#2DD4A7]/30 transition-all duration-200 group flex flex-col"
             >
-              {/* Teal icon container */}
-              <div className="w-10 h-10 rounded-xl bg-[#2DD4A7] flex items-center justify-center mb-4 flex-shrink-0">
+              {/* Navy icon container */}
+              <div className="w-10 h-10 rounded-xl bg-[#0F1C3F] flex items-center justify-center mb-4 flex-shrink-0">
                 {service.icon}
               </div>
 

@@ -41,9 +41,9 @@ export default function HowItWorks() {
 
         {/* Header */}
         <div className="text-center mb-10">
-          <span className="text-[#2DD4A7] text-xs font-extrabold uppercase tracking-widest mb-3 block">
+          <div className="inline-block bg-[#0F1C3F] text-[#2DD4A7] text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-full mb-4">
             How It Works
-          </span>
+          </div>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F]">
             Booking a Clean is Simple
           </h2>

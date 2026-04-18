@@ -3,6 +3,7 @@ import Hero from '@/components/Hero';
 import SocialProofBar from '@/components/SocialProofBar';
 import HowItWorks from '@/components/HowItWorks';
 import Services from '@/components/Services';
+import CleaningChecklist from '@/components/CleaningChecklist';
 import Pricing from '@/components/Pricing';
 import WhyTidyway from '@/components/WhyTidyway';
 import Reviews from '@/components/Reviews';
@@ -19,6 +20,7 @@ export default function Home() {
         <SocialProofBar />
         <HowItWorks />
         <Services />
+        <CleaningChecklist />
         <Pricing />
         <WhyTidyway />
         <Reviews />

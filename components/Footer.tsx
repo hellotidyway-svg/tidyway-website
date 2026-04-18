@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const links = ['About', 'Services', 'Pricing', 'Contact'];
 
 export default function Footer() {
@@ -7,7 +9,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
           <div>
-            <div className="text-2xl font-extrabold text-white mb-2 tracking-tight">TidyWay</div>
+            <div className="relative w-32 h-12 mb-3">
+              <Image
+                src="/TidyWay - Logo - Copy.png"
+                alt="TidyWay Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
             <p className="text-sm leading-relaxed">
               Professional Home Cleaning in London, ON
             </p>

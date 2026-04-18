@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -23,7 +24,15 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <span className="text-2xl font-extrabold text-[#0F1C3F] tracking-tight">TidyWay</span>
+          <div className="relative w-32 h-14">
+            <Image
+              src="/TidyWay - Logo - Copy.png"
+              alt="TidyWay Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
 
           <div className="flex items-center gap-4">
             <a

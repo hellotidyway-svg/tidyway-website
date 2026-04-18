@@ -1,5 +1,4 @@
 const rows = [
-  { size: 'Studio / Bachelor', ours: 'From $140', theirs: '$180', save: '$40' },
   { size: '1 Bed / 1 Bath',   ours: '$150',      theirs: '$200', save: '$50' },
   { size: '2 Bed / 1 Bath',   ours: '$180',      theirs: '$230', save: '$50' },
   { size: '3 Bed / 2 Bath',   ours: '$230',      theirs: '$290', save: '$60' },

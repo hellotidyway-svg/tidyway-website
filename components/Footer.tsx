@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
           <div>
-            <div className="text-2xl font-extrabold text-white mb-2 tracking-tight">Tidyway</div>
+            <div className="text-2xl font-extrabold text-white mb-2 tracking-tight">TidyWay</div>
             <p className="text-sm leading-relaxed">
               Professional Home Cleaning in London, ON
             </p>
@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© 2025 Tidyway. All rights reserved.</p>
+          <p>© 2025 TidyWay. All rights reserved.</p>
           <p>Professional Home Cleaning — London, Ontario</p>
         </div>
       </div>

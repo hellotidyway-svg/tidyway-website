@@ -1,7 +1,7 @@
-# Tidyway Landing Page
+# TidyWay Landing Page
 
 ## Project Overview
-High-converting landing page for **Tidyway**, a residential cleaning company based in London, Ontario.
+High-converting landing page for **TidyWay**, a residential cleaning company based in London, Ontario.
 Built with Next.js 14 App Router, Tailwind CSS, and TypeScript. Ready to deploy on Vercel.
 
 ## Tech Stack

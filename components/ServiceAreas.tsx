@@ -12,7 +12,7 @@ const neighbourhoods = [
 
 export default function ServiceAreas() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="bg-gray-50" style={{ paddingTop: 10, paddingBottom: 10 }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F] mb-5">
           Proudly Serving London, Ontario

@@ -1,7 +1,7 @@
 const reviews = [
   {
     name: 'Sarah M.',
-    text: 'Tidyway did an incredible job on our home in Byron. The team was professional, on time, and the house looked spotless. Will definitely be booking again!',
+    text: 'TidyWay did an incredible job on our home in Byron. The team was professional, on time, and the house looked spotless. Will definitely be booking again!',
   },
   {
     name: 'James T.',
@@ -9,7 +9,7 @@ const reviews = [
   },
   {
     name: 'Lisa K.',
-    text: "I've tried a few cleaning services in London and Tidyway is easily the best. Same cleaner every two weeks, she knows exactly what I like.",
+    text: "I've tried a few cleaning services in London and TidyWay is easily the best. Same cleaner every two weeks, she knows exactly what I like.",
   },
 ];
 
@@ -27,7 +27,7 @@ function Stars() {
 
 export default function Reviews() {
   return (
-    <section className="py-20 bg-white">
+    <section className="bg-white" style={{ paddingTop: 10, paddingBottom: 10 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F]">

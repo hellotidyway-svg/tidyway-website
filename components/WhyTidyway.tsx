@@ -35,11 +35,11 @@ const reasons = [
 
 export default function WhyTidyway() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="bg-gray-50" style={{ paddingTop: 10, paddingBottom: 10 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F]">
-            Why London Homeowners Choose Tidyway
+            Why London Homeowners Choose TidyWay
           </h2>
         </div>
 

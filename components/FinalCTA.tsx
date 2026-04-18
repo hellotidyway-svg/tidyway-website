@@ -6,13 +6,13 @@ const badges = [
 
 export default function FinalCTA() {
   return (
-    <section className="bg-[#0F1C3F] py-20">
+    <section className="bg-[#0F1C3F]" style={{ paddingTop: 10, paddingBottom: 10 }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
           Ready for a Cleaner Home?
         </h2>
         <p className="text-gray-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-          Join hundreds of London homeowners who trust Tidyway. Get your instant price in
+          Join hundreds of London homeowners who trust TidyWay. Get your instant price in
           under 60 seconds.
         </p>
 

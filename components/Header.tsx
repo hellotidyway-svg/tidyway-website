@@ -23,7 +23,7 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <span className="text-2xl font-extrabold text-[#0F1C3F] tracking-tight">Tidyway</span>
+          <span className="text-2xl font-extrabold text-[#0F1C3F] tracking-tight">TidyWay</span>
 
           <div className="flex items-center gap-4">
             <a

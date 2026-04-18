@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Tidyway | Professional Home Cleaning in London, Ontario',
+  title: 'TidyWay | Professional Home Cleaning in London, Ontario',
   description:
     "London's most trusted home cleaning service. Professional, insured, and background-checked cleaners. Instant online pricing. Book in under 2 minutes.",
 };

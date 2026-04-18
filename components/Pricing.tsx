@@ -1,6 +1,6 @@
 const pricing = [
-  { size: 'Studio / Bachelor', price: 'From $145' },
-  { size: '1 Bed / 1 Bath', price: '$155' },
+  { size: 'Studio / Bachelor', price: 'From $140' },
+  { size: '1 Bed / 1 Bath', price: '$150' },
   { size: '2 Bed / 1 Bath', price: '$180' },
   { size: '3 Bed / 2 Bath', price: '$230' },
   { size: '4 Bed / 3 Bath', price: '$290' },

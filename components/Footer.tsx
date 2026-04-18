@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© 2025 TidyWay. All rights reserved.</p>
+          <p>© 2026 TidyWay. All rights reserved.</p>
           <p>Professional Home Cleaning — London, Ontario</p>
         </div>
       </div>

@@ -8,7 +8,6 @@ const inputClass =
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
-    cleaningType: '',
     bedrooms: '',
     bathrooms: '',
     firstName: '',
@@ -43,18 +42,6 @@ export default function LeadForm() {
       <h3 className="text-xl font-extrabold text-[#0F1C3F] mb-5">Get Your Instant Price</h3>
 
       <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }} className="space-y-3">
-        <select
-          required
-          value={form.cleaningType}
-          onChange={e => set('cleaningType', e.target.value)}
-          className={inputClass}
-        >
-          <option value="" disabled>Type of Cleaning</option>
-          <option value="general">General Cleaning</option>
-          <option value="deep">Deep Cleaning</option>
-          <option value="move-in-out">Move In/Out Cleaning</option>
-        </select>
-
         <div className="grid grid-cols-2 gap-3">
           <select
             required

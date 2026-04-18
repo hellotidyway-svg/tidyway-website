@@ -31,9 +31,9 @@ export default function FinalCTA() {
           </a>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-6 text-gray-400 text-sm">
+        <div className="flex flex-wrap justify-center gap-6 text-sm">
           {badges.map(badge => (
-            <div key={badge.text} className="flex items-center gap-2">
+            <div key={badge.text} className="flex items-center gap-2 text-[#2DD4A7]">
               <span>{badge.icon}</span>
               <span>{badge.text}</span>
             </div>

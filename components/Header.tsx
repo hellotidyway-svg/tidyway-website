@@ -24,12 +24,12 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="relative h-[72px] w-auto">
+          <div className="h-14">
             <Image
               src="/TidyWay - Logo - Copy.png"
               alt="TidyWay Logo"
-              height={72}
-              width={200}
+              height={56}
+              width={150}
               className="object-contain"
               priority
             />

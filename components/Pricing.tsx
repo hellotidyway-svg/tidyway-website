@@ -98,7 +98,7 @@ export default function Pricing() {
 
         {/* Savings note */}
         <div className="mt-5 text-center">
-          <p className="text-gray-500 text-sm bg-gray-50 rounded-xl px-6 py-4 inline-block border border-gray-100">
+          <p className="text-gray-500 text-sm font-bold bg-gray-50 rounded-xl px-6 py-4 inline-block border border-gray-100">
             💰 Save an additional 10–20% with a recurring booking. Discount applied automatically.
           </p>
         </div>

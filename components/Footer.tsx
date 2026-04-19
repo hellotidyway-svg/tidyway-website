@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
           <div>
-            <div className="relative w-32 h-12 mb-3">
+            <div className="relative w-40 mb-3" style={{ height: '60px' }}>
               <Image
                 src="/TidyWay Logo Horizontal.png"
                 alt="TidyWay Logo"

@@ -28,8 +28,8 @@ export default function Header() {
             <Image
               src="/TidyWay Logo Horizontal.png"
               alt="TidyWay Logo"
-              height={40}
-              width={107}
+              height={50}
+              width={134}
               className="object-contain"
               priority
             />

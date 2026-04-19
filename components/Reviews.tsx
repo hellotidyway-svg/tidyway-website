@@ -45,14 +45,11 @@ export default function Reviews() {
               <p className="text-gray-600 leading-relaxed flex-1 mb-6 text-sm">
                 &ldquo;{review.text}&rdquo;
               </p>
-              <div className="flex items-center justify-between border-t border-gray-50 pt-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-[#0F1C3F] text-[#2DD4A7] font-extrabold text-sm flex items-center justify-center">
-                    {review.name[0]}
-                  </div>
-                  <span className="font-bold text-[#0F1C3F] text-sm">{review.name}</span>
+              <div className="flex items-center gap-3 border-t border-gray-50 pt-4">
+                <div className="w-9 h-9 rounded-full bg-[#0F1C3F] text-[#2DD4A7] font-extrabold text-sm flex items-center justify-center">
+                  {review.name[0]}
                 </div>
-                <span className="text-xs text-gray-400 font-medium">Verified Google Review</span>
+                <span className="font-bold text-[#0F1C3F] text-sm">{review.name}</span>
               </div>
             </div>
           ))}

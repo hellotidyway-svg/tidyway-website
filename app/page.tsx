@@ -7,6 +7,7 @@ import CleaningChecklist from '@/components/CleaningChecklist';
 import Pricing from '@/components/Pricing';
 import WhyTidyway from '@/components/WhyTidyway';
 import ServiceAreas from '@/components/ServiceAreas';
+import Reviews from '@/components/Reviews';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
         <Pricing />
         <WhyTidyway />
         <ServiceAreas />
+        <Reviews />
       </main>
       <Footer />
     </>

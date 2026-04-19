@@ -24,10 +24,10 @@ export default function FinalCTA() {
             Get My Free Quote →
           </a>
           <a
-            href="tel:+12260000000"
+            href="tel:+12262429012"
             className="border-2 border-white/40 hover:border-white text-white font-extrabold px-9 py-4 rounded-xl text-lg hover:bg-white hover:text-[#0F1C3F] transition-all w-full sm:w-auto text-center"
           >
-            Call Us: (226) XXX-XXXX
+            Call Us: (226) 242-9012
           </a>
         </div>
 

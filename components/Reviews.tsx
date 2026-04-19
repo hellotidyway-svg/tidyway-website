@@ -39,13 +39,15 @@ export default function Reviews() {
           {reviews.map(review => (
             <div
               key={review.name}
-              className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+              className="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col text-center sm:text-left"
             >
-              <Stars />
+              <div className="flex justify-center sm:justify-start">
+                <Stars />
+              </div>
               <p className="text-gray-600 leading-relaxed flex-1 mb-6 text-sm">
                 &ldquo;{review.text}&rdquo;
               </p>
-              <div className="flex items-center gap-3 border-t border-gray-50 pt-4">
+              <div className="flex items-center gap-3 border-t border-gray-50 pt-4 sm:flex-row flex-col">
                 <div className="w-9 h-9 rounded-full bg-[#0F1C3F] text-[#2DD4A7] font-extrabold text-sm flex items-center justify-center">
                   {review.name[0]}
                 </div>

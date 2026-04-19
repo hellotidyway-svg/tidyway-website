@@ -87,18 +87,18 @@ export default function WhyTidyway() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Two-column header */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-10">
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-10 md:text-left text-center">
 
           {/* Left — eyebrow + headline */}
-          <div>
+          <div className="md:block flex flex-col items-center">
             <div className="inline-block bg-[#2DD4A7] text-[#0F1C3F] text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-full mb-3">
               Why TidyWay
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold leading-tight">
               <span className="text-white">
-                Professional cleaners you can trust,<br />built for London homes.
+                Professional cleaners you can trust, built for London homes.
               </span>
-              <br />
+              <br className="hidden md:block" />
               <span className="text-[#2DD4A7]">Insured, background-checked, and committed to excellence.</span>
             </h2>
           </div>
@@ -119,10 +119,10 @@ export default function WhyTidyway() {
           {reasons.map(reason => (
             <div
               key={reason.title}
-              className="rounded-2xl p-6 border border-white/10"
+              className="rounded-2xl p-6 border border-white/10 text-center sm:text-left"
               style={{ background: 'rgba(255,255,255,0.05)' }}
             >
-              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center mb-4 sm:ml-0 mx-auto">
                 {reason.icon}
               </div>
               <h3 className="text-white font-extrabold text-base mb-2">{reason.title}</h3>

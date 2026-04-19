@@ -85,10 +85,10 @@ export default function Services() {
           {services.map(service => (
             <div
               key={service.title}
-              className="bg-white border border-gray-100 rounded-2xl p-7 hover:shadow-lg hover:border-[#2DD4A7]/30 transition-all duration-200 group flex flex-col"
+              className="bg-white border border-gray-100 rounded-2xl p-7 hover:shadow-lg hover:border-[#2DD4A7]/30 transition-all duration-200 group flex flex-col sm:text-left text-center"
             >
               {/* Navy icon container */}
-              <div className="w-10 h-10 rounded-xl bg-[#0F1C3F] flex items-center justify-center mb-4 flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#0F1C3F] flex items-center justify-center mb-4 flex-shrink-0 sm:ml-0 mx-auto">
                 {service.icon}
               </div>
 
@@ -100,7 +100,7 @@ export default function Services() {
               {/* Learn more link */}
               <a
                 href="#lead-form"
-                className="inline-block mt-4 text-[#2DD4A7] hover:text-[#22c497] text-sm font-bold transition-colors"
+                className="inline-block mt-4 text-[#2DD4A7] hover:text-[#22c497] text-sm font-bold transition-colors sm:ml-0 mx-auto"
               >
                 Learn more →
               </a>

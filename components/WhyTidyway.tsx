@@ -70,15 +70,15 @@ const badges = [
 
 export default function WhyTidyway() {
   return (
-    <section className="bg-[#0F1C3F]" style={{ paddingTop: 60, paddingBottom: 60 }}>
+    <section className="bg-[#0F1C3F]" style={{ paddingTop: 40, paddingBottom: 40 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Two-column header */}
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-14">
+        <div className="grid md:grid-cols-2 gap-12 items-center mb-10">
 
           {/* Left — eyebrow + headline */}
           <div>
-            <div className="inline-block bg-[#2DD4A7] text-[#0F1C3F] text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-full mb-5">
+            <div className="inline-block bg-[#2DD4A7] text-[#0F1C3F] text-xs font-extrabold uppercase tracking-widest px-4 py-2 rounded-full mb-3">
               Why TidyWay
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold leading-tight">
@@ -92,7 +92,7 @@ export default function WhyTidyway() {
 
           {/* Right — paragraph */}
           <div>
-            <p className="text-gray-300 text-base md:text-lg leading-relaxed">
+            <p className="text-gray-300 text-sm md:text-base leading-relaxed">
               TidyWay was built for London homes — from heritage Victorians in Old East Village to
               new builds in Lambeth and Summerside. We know trust takes time to earn, so we start
               with a team that&apos;s background-checked, fully insured, and trained to care for
@@ -102,7 +102,7 @@ export default function WhyTidyway() {
         </div>
 
         {/* 3×2 Feature cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
           {reasons.map(reason => (
             <div
               key={reason.title}

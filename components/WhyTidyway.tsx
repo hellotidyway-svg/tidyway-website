@@ -78,8 +78,8 @@ export default function WhyTidyway() {
         backgroundImage: `
           radial-gradient(ellipse 75% 45% at 50% -5%, rgba(45, 212, 167, 0.09) 0%, transparent 65%),
           radial-gradient(ellipse 50% 50% at 85% 90%, rgba(11, 89, 128, 0.20) 0%, transparent 55%),
-          linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px)
+          linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px)
         `,
         backgroundSize: 'auto, auto, 48px 48px, 48px 48px',
       }}

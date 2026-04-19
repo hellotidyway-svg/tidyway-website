@@ -6,9 +6,7 @@ import Services from '@/components/Services';
 import CleaningChecklist from '@/components/CleaningChecklist';
 import Pricing from '@/components/Pricing';
 import WhyTidyway from '@/components/WhyTidyway';
-import Reviews from '@/components/Reviews';
 import ServiceAreas from '@/components/ServiceAreas';
-import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -23,9 +21,7 @@ export default function Home() {
         <CleaningChecklist />
         <Pricing />
         <WhyTidyway />
-        <Reviews />
         <ServiceAreas />
-        <FinalCTA />
       </main>
       <Footer />
     </>

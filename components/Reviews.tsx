@@ -57,15 +57,6 @@ export default function Reviews() {
             </div>
           ))}
         </div>
-
-        <div className="text-center">
-          <a
-            href="#lead-form"
-            className="inline-block bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold px-10 py-4 rounded-xl text-lg transition-colors"
-          >
-            Book Your Clean Today →
-          </a>
-        </div>
       </div>
     </section>
   );

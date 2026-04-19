@@ -1,7 +1,3 @@
-import Image from 'next/image';
-
-const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
-
 const neighbourhoods = [
   'Byron',
   'Masonville',
@@ -25,19 +21,6 @@ export default function ServiceAreas() {
           We clean homes across all London neighbourhoods including Byron, Masonville, Old North,
           Wortley Village, Hyde Park, Sunningdale, White Oaks, Old East Village, and Downtown London.
         </p>
-
-        {/* Map */}
-        <div className="w-full rounded-2xl overflow-hidden shadow-md border border-[#2DD4A7]/25 mb-8">
-          <Image
-            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-81.2453,42.9849,11,0,0/640x360@2x?access_token=${mapboxToken}`}
-            alt="TidyWay Service Area — London, Ontario"
-            width={640}
-            height={360}
-            className="w-full h-auto block"
-            style={{ filter: 'grayscale(20%) contrast(95%)' }}
-            priority={false}
-          />
-        </div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {neighbourhoods.map(hood => (

@@ -18,7 +18,10 @@ export default function Footer() {
               />
             </div>
             <p className="text-sm leading-relaxed">
-              Professional Home Cleaning in London, ON
+              We make professional home cleaning in London, Ontario simple, reliable, and stress-free. From deep cleans to recurring maintenance, our team is committed to delivering spotless results every time.
+            </p>
+            <p className="text-sm leading-relaxed mt-3">
+              Fully insured. Background-checked. Satisfaction guaranteed.
             </p>
           </div>
 

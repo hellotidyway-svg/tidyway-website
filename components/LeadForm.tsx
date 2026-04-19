@@ -39,7 +39,8 @@ export default function LeadForm() {
       id="lead-form"
       className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100"
     >
-      <h3 className="text-xl font-extrabold text-[#0F1C3F] mb-5">Get Your Instant Price</h3>
+      <h3 className="text-xl font-extrabold text-[#0F1C3F] mb-2 text-center">Get Your Instant Price</h3>
+      <p className="text-gray-500 text-sm mb-5 text-center">Tell us about your home to see your price instantly</p>
 
       <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }} className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
@@ -100,7 +101,7 @@ export default function LeadForm() {
           type="submit"
           className="w-full bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold py-4 rounded-xl text-lg transition-colors mt-1"
         >
-          See My Price →
+          Get My Free Quote
         </button>
 
         <p className="text-center text-gray-400 text-xs pt-1">

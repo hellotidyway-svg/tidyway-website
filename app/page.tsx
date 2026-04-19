@@ -22,8 +22,8 @@ export default function Home() {
         <CleaningChecklist />
         <Pricing />
         <WhyTidyway />
-        <ServiceAreas />
         <Reviews />
+        <ServiceAreas />
       </main>
       <Footer />
     </>

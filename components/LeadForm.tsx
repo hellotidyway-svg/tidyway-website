@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const inputClass =
   'w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#2DD4A7] focus:border-transparent bg-white transition-shadow hover:shadow-md hover:shadow-[#2DD4A7]/20 hover:border-[#2DD4A7]/50';
 
 export default function LeadForm() {
+  const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     bedrooms: '',
@@ -16,6 +18,47 @@ export default function LeadForm() {
   });
 
   const set = (field: string, value: string) => setForm(prev => ({ ...prev, [field]: value }));
+
+  // Redirect to /booking after form submission
+  useEffect(() => {
+    if (submitted) {
+      // Send webhook to GHL
+      const sendWebhook = async () => {
+        try {
+          const response = await fetch(
+            'https://services.leadconnectorhq.com/hooks/OFtHKPjNBLxDyUbUKHKF/webhook-trigger/7cc910b6-3d58-4383-a978-b33bec26bd44',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                firstName: form.firstName,
+                email: form.email,
+                phone: form.phone,
+                bedrooms: form.bedrooms,
+                bathrooms: form.bathrooms,
+              }),
+            }
+          );
+
+          if (response.ok) {
+            console.log('Webhook sent successfully');
+          }
+        } catch (error) {
+          // Silently handle errors — always redirect
+          console.log('Webhook error (silently handled)');
+        }
+      };
+
+      sendWebhook();
+
+      // Redirect to /booking after short delay to show thank you message
+      const timer = setTimeout(() => {
+        router.push('/booking');
+      }, 1500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [submitted, router, form]);
 
   if (submitted) {
     return (
@@ -42,7 +85,13 @@ export default function LeadForm() {
       <h3 className="text-xl font-extrabold text-[#0F1C3F] mb-2 text-center">Get Your Instant Price</h3>
       <p className="text-gray-500 text-sm mb-5 text-center">Tell us about your home to see your price instantly</p>
 
-      <form onSubmit={e => { e.preventDefault(); setSubmitted(true); }} className="space-y-3">
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          setSubmitted(true);
+        }}
+        className="space-y-3"
+      >
         <div className="grid grid-cols-2 gap-3">
           <select
             required

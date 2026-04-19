@@ -49,7 +49,7 @@ export default function BookingPage() {
       <main>
 
         {/* Hero */}
-        <section className="bg-[#f0fdf9] pt-14 pb-10 text-center">
+        <section className="bg-gray-50 pt-14 pb-10 text-center">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F] mb-3">
               Complete Your Booking
@@ -136,7 +136,7 @@ export default function BookingPage() {
                   >
                     hello@tidyway.ca
                   </a>
-                  <p className="text-white/40 text-xs mt-2">We'll get back to you within 24 hours</p>
+                  <p className="text-white/40 text-xs mt-2">We normally reply within just a few hours!</p>
                 </div>
 
               </div>

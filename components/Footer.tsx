@@ -67,7 +67,14 @@ export default function Footer() {
 
         <div className="border-t border-gray-200 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <p>© 2026 TidyWay. All rights reserved.</p>
-          <p>Professional Home Cleaning — London, Ontario</p>
+          <div className="flex items-center gap-4">
+            <a href="/privacy-policy" className="text-gray-400 hover:text-[#2DD4A7] transition-colors">
+              Privacy Policy
+            </a>
+            <a href="/terms-of-service" className="text-gray-400 hover:text-[#2DD4A7] transition-colors">
+              Terms of Service
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -70,7 +70,20 @@ const badges = [
 
 export default function WhyTidyway() {
   return (
-    <section className="bg-[#0F1C3F]" style={{ paddingTop: 40, paddingBottom: 40 }}>
+    <section
+      style={{
+        paddingTop: 40,
+        paddingBottom: 40,
+        backgroundColor: '#0F1C3F',
+        backgroundImage: `
+          radial-gradient(ellipse 75% 45% at 50% -5%, rgba(45, 212, 167, 0.09) 0%, transparent 65%),
+          radial-gradient(ellipse 50% 50% at 85% 90%, rgba(11, 89, 128, 0.20) 0%, transparent 55%),
+          linear-gradient(rgba(255,255,255,0.032) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.032) 1px, transparent 1px)
+        `,
+        backgroundSize: 'auto, auto, 48px 48px, 48px 48px',
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Two-column header */}

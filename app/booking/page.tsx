@@ -49,7 +49,7 @@ export default function BookingPage() {
       <main>
 
         {/* Hero */}
-        <section className="bg-white pt-14 pb-10 text-center">
+        <section className="bg-[#f0fdf9] pt-14 pb-10 text-center">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F] mb-3">
               Complete Your Booking
@@ -103,7 +103,7 @@ export default function BookingPage() {
                       S
                     </div>
                     <span className="font-bold text-[#0F1C3F] text-sm">Sarah M.</span>
-                    <span className="text-xs text-gray-400 ml-auto">Verified Google Review</span>
+                    <span className="text-xs text-gray-400 ml-auto">Verified Review</span>
                   </div>
                 </div>
 
@@ -129,14 +129,14 @@ export default function BookingPage() {
                   <p className="font-extrabold text-xs uppercase tracking-wider text-[#2DD4A7] mb-1">
                     Questions?
                   </p>
-                  <p className="font-extrabold text-lg text-white mb-2">Call us</p>
+                  <p className="font-extrabold text-lg text-white mb-2">Email us</p>
                   <a
-                    href="tel:+12260000000"
+                    href="mailto:hello@tidyway.ca"
                     className="text-white/80 hover:text-[#2DD4A7] transition-colors text-sm font-semibold"
                   >
-                    (226) XXX-XXXX
+                    hello@tidyway.ca
                   </a>
-                  <p className="text-white/40 text-xs mt-2">Mon–Sat, 8am–6pm EST</p>
+                  <p className="text-white/40 text-xs mt-2">We'll get back to you within 24 hours</p>
                 </div>
 
               </div>

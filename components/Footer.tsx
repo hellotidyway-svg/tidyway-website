@@ -4,7 +4,7 @@ const links = ['About', 'Services', 'Pricing', 'Contact'];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a1530] text-gray-400">
+    <footer className="bg-white text-[#0F1C3F]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           {/* Brand */}
@@ -24,7 +24,7 @@ export default function Footer() {
 
           {/* Links */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
+            <h4 className="text-[#0F1C3F] font-bold text-sm uppercase tracking-wider mb-4">
               Company
             </h4>
             <ul className="space-y-2">
@@ -32,7 +32,7 @@ export default function Footer() {
                 <li key={link}>
                   <a
                     href="#"
-                    className="text-sm hover:text-white transition-colors"
+                    className="text-sm hover:text-[#2DD4A7] transition-colors"
                   >
                     {link}
                   </a>
@@ -43,7 +43,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-4">
+            <h4 className="text-[#0F1C3F] font-bold text-sm uppercase tracking-wider mb-4">
               Contact
             </h4>
             <ul className="space-y-2 text-sm">
@@ -62,7 +62,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div className="border-t border-gray-200 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <p>© 2026 TidyWay. All rights reserved.</p>
           <p>Professional Home Cleaning — London, Ontario</p>
         </div>

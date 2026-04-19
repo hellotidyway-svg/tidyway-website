@@ -13,8 +13,8 @@ export default function Hero() {
     <section className="relative min-h-[700px] flex items-center pt-16">
       {/* Background image */}
       <Image
-        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80"
-        alt="Clean, bright modern home interior"
+        src="https://images.unsplash.com/photo-1770063817031-f3b98dff347f?w=1800&q=80"
+        alt="Bright clean modern kitchen interior"
         fill
         className="object-cover"
         priority

@@ -3,7 +3,11 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export default function Header() {
+interface HeaderProps {
+  hideCTA?: boolean;
+}
+
+export default function Header({ hideCTA = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -35,12 +39,14 @@ export default function Header() {
             />
           </div>
 
-          <button
-            onClick={scrollToForm}
-            className="bg-[#2DD4A7] hover:bg-[#22c497] text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap"
-          >
-            Get My Free Quote
-          </button>
+          {!hideCTA && (
+            <button
+              onClick={scrollToForm}
+              className="bg-[#2DD4A7] hover:bg-[#22c497] text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-colors whitespace-nowrap"
+            >
+              Get My Free Quote
+            </button>
+          )}
         </div>
       </div>
     </header>

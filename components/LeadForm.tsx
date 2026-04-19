@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 const inputClass =
-  'w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#2DD4A7] focus:border-transparent bg-white transition-shadow';
+  'w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#2DD4A7] focus:border-transparent bg-white transition-shadow hover:shadow-md hover:shadow-[#2DD4A7]/20 hover:border-[#2DD4A7]/50';
 
 export default function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -101,7 +101,7 @@ export default function LeadForm() {
           type="submit"
           className="w-full bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold py-4 rounded-xl text-lg transition-colors mt-1"
         >
-          Get My Free Quote
+          Get My Free Quote →
         </button>
 
         <p className="text-center text-gray-400 text-xs pt-1">

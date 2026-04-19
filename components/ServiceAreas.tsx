@@ -22,6 +22,20 @@ export default function ServiceAreas() {
           Wortley Village, Hyde Park, Sunningdale, White Oaks, Old East Village, and Downtown London.
         </p>
 
+        {/* Map */}
+        <div className="w-full rounded-2xl overflow-hidden shadow-md border border-[#2DD4A7]/25 mb-8">
+          <iframe
+            src="https://maps.google.com/maps?q=London,Ontario,Canada&t=m&z=11&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height="340"
+            style={{ border: 0, display: 'block', filter: 'grayscale(20%) contrast(95%)' }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="TidyWay Service Area — London, Ontario"
+          />
+        </div>
+
         <div className="flex flex-wrap justify-center gap-3 mb-6">
           {neighbourhoods.map(hood => (
             <span

@@ -1,3 +1,7 @@
+import Image from 'next/image';
+
+const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+
 const neighbourhoods = [
   'Byron',
   'Masonville',
@@ -24,15 +28,14 @@ export default function ServiceAreas() {
 
         {/* Map */}
         <div className="w-full rounded-2xl overflow-hidden shadow-md border border-[#2DD4A7]/25 mb-8">
-          <iframe
-            src="https://maps.google.com/maps?q=London,Ontario,Canada&t=m&z=11&ie=UTF8&iwloc=&output=embed"
-            width="100%"
-            height="340"
-            style={{ border: 0, display: 'block', filter: 'grayscale(20%) contrast(95%)' }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="TidyWay Service Area — London, Ontario"
+          <Image
+            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-81.2453,42.9849,11,0,0/640x360@2x?access_token=${mapboxToken}`}
+            alt="TidyWay Service Area — London, Ontario"
+            width={640}
+            height={360}
+            className="w-full h-auto block"
+            style={{ filter: 'grayscale(20%) contrast(95%)' }}
+            priority={false}
           />
         </div>
 

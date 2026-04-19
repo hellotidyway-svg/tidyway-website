@@ -49,7 +49,7 @@ export default function BookingPage() {
       <main>
 
         {/* Hero */}
-        <section className="bg-gray-100 pt-8 pb-6 text-center">
+        <section className="bg-gray-100 pt-[42px] pb-6 text-center">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl md:text-4xl font-extrabold text-[#0F1C3F] mb-3">
               Complete Your Booking

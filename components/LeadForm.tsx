@@ -51,9 +51,19 @@ export default function LeadForm() {
 
       sendWebhook();
 
-      // Redirect to /booking after short delay to show thank you message
+      // Fire Google Ads conversion event before redirect
       const timer = setTimeout(() => {
-        router.push('/booking');
+        if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+          (window as any).gtag('event', 'conversion', {
+            'send_to': 'AW-17983524327/XqPACJvx454cEOebm_9C',
+            'event_callback': () => {
+              router.push('/booking');
+            }
+          });
+        } else {
+          // Fallback if gtag not available
+          router.push('/booking');
+        }
       }, 1500);
 
       return () => clearTimeout(timer);

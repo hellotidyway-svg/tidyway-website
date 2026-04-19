@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <div className="relative w-32 h-12 mb-3">
               <Image
-                src="/TidyWay - Logo - Copy.png"
+                src="/TidyWay Logo Horizontal.png"
                 alt="TidyWay Logo"
                 fill
                 className="object-contain"

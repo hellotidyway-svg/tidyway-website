@@ -26,7 +26,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           <div className="h-10 flex items-center">
             <Image
-              src="/TidyWay - Logo - Copy.png"
+              src="/TidyWay Logo Horizontal.png"
               alt="TidyWay Logo"
               height={40}
               width={107}

@@ -112,10 +112,10 @@ export default function LeadForm() {
                 key={n}
                 type="button"
                 onClick={() => set('bedrooms', n)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
                   form.bedrooms === n
                     ? 'bg-[#2DD4A7] text-[#0F1C3F]'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    : 'bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] hover:bg-gray-200'
                 }`}
               >
                 {n}
@@ -133,10 +133,10 @@ export default function LeadForm() {
                 key={n}
                 type="button"
                 onClick={() => set('bathrooms', n)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                className={`px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
                   form.bathrooms === n
                     ? 'bg-[#2DD4A7] text-[#0F1C3F]'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    : 'bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] hover:bg-gray-200'
                 }`}
               >
                 {n}

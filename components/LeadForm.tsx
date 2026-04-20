@@ -76,12 +76,12 @@ export default function LeadForm() {
         id="lead-form"
         className="bg-white rounded-2xl shadow-xl p-8 text-center border border-gray-100"
       >
-        <div className="text-5xl mb-4">🎉</div>
+        <div className="text-5xl mb-4">⌛</div>
         <h3 className="text-2xl font-extrabold text-[#0F1C3F] mb-2">
           Thanks, {form.firstName || 'friend'}!
         </h3>
         <p className="text-gray-500 text-base">
-          We&apos;ll be in touch shortly with your quote.
+          You&apos;re being redirected to complete your booking.
         </p>
       </div>
     );

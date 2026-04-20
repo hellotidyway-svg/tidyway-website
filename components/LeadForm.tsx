@@ -128,7 +128,7 @@ export default function LeadForm() {
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bathrooms</p>
           <div className="flex flex-wrap gap-2">
-            {['1', '1.5', '2', '2.5', '3', '3.5+'].map(n => (
+            {['1', '1.5', '2', '2.5', '3+'].map(n => (
               <button
                 key={n}
                 type="button"

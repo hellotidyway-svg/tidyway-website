@@ -63,7 +63,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="bg-gray-50" style={{ paddingTop: 40, paddingBottom: 40 }}>
+    <section id="services" className="bg-gray-50" style={{ paddingTop: 40, paddingBottom: 40 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}

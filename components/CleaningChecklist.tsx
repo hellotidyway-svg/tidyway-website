@@ -165,7 +165,7 @@ export default function CleaningChecklist() {
   const isIncluded    = (tier: Tier) => TIER_VISIBILITY[tier].includes(activeTab);
 
   return (
-    <section className="bg-gray-50 border-t border-gray-100" style={{ paddingTop: 40, paddingBottom: 40 }}>
+    <section id="how-it-works" className="bg-gray-50 border-t border-gray-100" style={{ paddingTop: 40, paddingBottom: 40 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Section header ── */}

@@ -7,7 +7,7 @@ const rows = [
 
 export default function Pricing() {
   return (
-    <section className="bg-white" style={{ paddingTop: 40, paddingBottom: 40 }}>
+    <section id="pricing" className="bg-white" style={{ paddingTop: 40, paddingBottom: 40 }}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}

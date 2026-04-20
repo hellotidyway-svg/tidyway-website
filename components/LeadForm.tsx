@@ -98,34 +98,51 @@ export default function LeadForm() {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+          if (!form.bedrooms || !form.bathrooms) return;
           setSubmitted(true);
         }}
-        className="space-y-3"
+        className="space-y-4"
       >
-        <div className="grid grid-cols-2 gap-3">
-          <select
-            required
-            value={form.bedrooms}
-            onChange={e => set('bedrooms', e.target.value)}
-            className={inputClass}
-          >
-            <option value="" disabled>Bedrooms</option>
+        {/* Bedrooms pill selector */}
+        <div>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bedrooms</p>
+          <div className="flex flex-wrap gap-2">
             {['1', '2', '3', '4', '5+'].map(n => (
-              <option key={n} value={n}>{n}</option>
+              <button
+                key={n}
+                type="button"
+                onClick={() => set('bedrooms', n)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                  form.bedrooms === n
+                    ? 'bg-[#2DD4A7] text-[#0F1C3F]'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                }`}
+              >
+                {n}
+              </button>
             ))}
-          </select>
+          </div>
+        </div>
 
-          <select
-            required
-            value={form.bathrooms}
-            onChange={e => set('bathrooms', e.target.value)}
-            className={inputClass}
-          >
-            <option value="" disabled>Bathrooms</option>
-            {['1', '1.5', '2', '2.5', '3', '3+'].map(n => (
-              <option key={n} value={n}>{n}</option>
+        {/* Bathrooms pill selector */}
+        <div>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bathrooms</p>
+          <div className="flex flex-wrap gap-2">
+            {['1', '1.5', '2', '2.5', '3', '3.5+'].map(n => (
+              <button
+                key={n}
+                type="button"
+                onClick={() => set('bathrooms', n)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                  form.bathrooms === n
+                    ? 'bg-[#2DD4A7] text-[#0F1C3F]'
+                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                }`}
+              >
+                {n}
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">

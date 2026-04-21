@@ -181,7 +181,7 @@ export default function LeadForm() {
         </button>
 
         <p className="text-center text-gray-400 text-xs pt-1">
-          No obligation. Takes less than 60 seconds. By providing your phone number, you agree to receive texts from TidyWay. See our{' '}
+          No obligation. Takes less than 60 seconds. By providing your phone number, you agree to receive texts from TidyWay about your booking. See our{' '}
           <a href="/privacy-policy" className="hover:text-[#2DD4A7] transition-colors">
             Privacy Policy
           </a>

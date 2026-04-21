@@ -182,7 +182,7 @@ export default function LeadForm() {
         </button>
 
         <p className="text-center text-gray-400 text-[8px] pt-1 italic">
-          By providing your phone number, you agree to receive SMS messages from TidyWay about your cleaning inquiry and booking updates. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out. See our{' '}
+          By providing your phone number, you agree to receive SMS messages from TidyWay about your cleaning booking inquiries, confirmations, and service updates. Message frequency varies. Msg & data rates may apply. Reply STOP to opt out. See our{' '}
           <a href="/privacy-policy" className="hover:text-[#2DD4A7] transition-colors">
             Privacy Policy
           </a>

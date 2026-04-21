@@ -106,7 +106,7 @@ export default function LeadForm() {
         {/* Bedrooms pill selector */}
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bedrooms</p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap justify-center gap-2">
             {['1', '2', '3', '4', '5+'].map(n => (
               <button
                 key={n}
@@ -127,7 +127,7 @@ export default function LeadForm() {
         {/* Bathrooms pill selector */}
         <div>
           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bathrooms</p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap justify-center gap-2">
             {['1', '1.5', '2', '2.5', '3+'].map(n => (
               <button
                 key={n}
@@ -178,7 +178,7 @@ export default function LeadForm() {
           className="w-full bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold py-4 rounded-xl text-lg transition-colors mt-1 flex flex-col items-center gap-0.5"
         >
           <span>Get My Free Quote →</span>
-          <span className="text-xs font-normal italic text-white/70">✓ Takes less than 60 seconds</span>
+          <span className="text-xs font-normal italic text-white/85">✓ Takes less than 60 seconds</span>
         </button>
 
         <p className="text-center text-gray-400 text-xs pt-1 italic">

@@ -126,7 +126,7 @@ export default function LeadForm() {
 
         {/* Bathrooms pill selector */}
         <div>
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bathrooms</p>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 text-center">Bathrooms</p>
           <div className="flex flex-wrap justify-center gap-2">
             {['1', '1.5', '2', '2.5', '3+'].map(n => (
               <button

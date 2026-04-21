@@ -183,6 +183,10 @@ export default function LeadForm() {
         <p className="text-center text-gray-400 text-xs pt-1">
           No obligation. Takes less than 60 seconds.
         </p>
+
+        <p className="text-center text-gray-400 text-xs italic pt-2 leading-relaxed">
+          By providing your phone number, you agree to receive text messages from TidyWay. Message and data rates may apply. Message frequency varies. Reply STOP to opt out.
+        </p>
       </form>
     </div>
   );

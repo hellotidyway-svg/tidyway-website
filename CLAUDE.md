@@ -73,7 +73,7 @@ public/
 - **Bathroom selector**: pill-style buttons ['1', '1.5', '2', '2.5', '3+'] (centered, flex flex-wrap justify-center)
 - **Pill styling**: unselected (bg-[#F3F4F6], text-[#374151], border border-[#D1D5DB]), selected (bg-[#2DD4A7], text-[#0F1C3F])
 - **Button subtext**: "✓ Takes less than 60 seconds" (text-xs, italic, text-white/80, font-normal)
-- **SMS consent disclaimer**: "By providing your phone number, you agree to receive texts from TidyWay. See our Privacy Policy for details." (italic, centered, text-gray-400 text-xs)
+- **SMS consent disclaimer**: "By providing your phone number, you agree to receive texts from TidyWay about your booking." (italic, centered, text-gray-400 text-[8px])
 - **Post-submission message**: "⌛ Thanks, {firstName}! You're being redirected to complete your booking."
 - **Form submission flow**:
   1. User submits form (validates bedrooms & bathrooms are selected)
@@ -150,6 +150,7 @@ Applied to Services, WhyTidyway, Reviews, and Footer for centering on mobile:
 
 ### /terms-of-service Page (app/terms-of-service/page.tsx)
 - 9 sections: Services, Quotes & Bookings, Payments, Cancellations & Rescheduling, Satisfaction Guarantee, Communication Consent, Limitation of Liability, Changes to Terms, Contact
+- **Section 6 (Communication Consent)**: Expanded SMS disclosure language including message frequency, rates, opt-out (STOP), help (HELP), carrier liability, and age requirement (18+)
 
 ### /jobs-london Page (app/jobs-london/page.tsx)
 - Metadata: robots noindex, nofollow (hidden from search)

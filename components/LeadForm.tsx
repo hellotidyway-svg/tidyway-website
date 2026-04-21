@@ -175,13 +175,14 @@ export default function LeadForm() {
 
         <button
           type="submit"
-          className="w-full bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold py-4 rounded-xl text-lg transition-colors mt-1"
+          className="w-full bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold py-4 rounded-xl text-lg transition-colors mt-1 flex flex-col items-center gap-0.5"
         >
-          Get My Free Quote →
+          <span>Get My Free Quote →</span>
+          <span className="text-xs font-normal italic text-white/70">✓ Takes less than 60 seconds</span>
         </button>
 
-        <p className="text-center text-gray-400 text-xs pt-1">
-          No obligation. Takes less than 60 seconds. By providing your phone number, you agree to receive texts from TidyWay about your booking. See our{' '}
+        <p className="text-center text-gray-400 text-xs pt-1 italic">
+          By providing your phone number, you agree to receive texts from TidyWay. See our{' '}
           <a href="/privacy-policy" className="hover:text-[#2DD4A7] transition-colors">
             Privacy Policy
           </a>

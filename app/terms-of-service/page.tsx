@@ -66,7 +66,7 @@ export default function TermsOfServicePage() {
             <section>
               <h2 className="text-xl font-extrabold text-[#0F1C3F] mb-3">6. Communication Consent</h2>
               <p>
-                By submitting your information through our website forms, you agree to be contacted by TidyWay via phone, email, or SMS. Standard message rates apply. You may opt out by replying STOP.
+                By submitting your information through our website forms, you agree to be contacted by TidyWay via phone, email, or SMS regarding your inquiry or service booking. Message frequency varies based on your interactions. Msg & data rates may apply. You may opt out at any time by replying STOP. For help, reply HELP. Carriers are not liable for delayed or undelivered messages. You must be 18 years of age or older to consent to receive SMS communications from TidyWay.
               </p>
             </section>
 

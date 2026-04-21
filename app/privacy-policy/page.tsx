@@ -61,6 +61,9 @@ export default function PrivacyPolicyPage() {
               <p>
                 TidyWay does not sell or rent personal data and only shares information with trusted service providers only as necessary to operate our business.
               </p>
+              <p>
+                No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties.
+              </p>
             </section>
 
             <section>

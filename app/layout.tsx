@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import './globals.css';
+import GHLChatWidget from '@/components/GHLChatWidget';
 
 export const metadata: Metadata = {
   title: 'TidyWay | Professional Home Cleaning in London, Ontario',
@@ -35,7 +36,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <GHLChatWidget />
+      </body>
     </html>
   );
 }

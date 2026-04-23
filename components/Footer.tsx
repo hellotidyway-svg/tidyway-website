@@ -51,16 +51,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-sm md:text-left text-center">
               <li>
-                <a href="tel:+12262429012" className="hover:text-white transition-colors">
-                  (226) 242-9012
-                </a>
-              </li>
-              <li>
                 <a href="mailto:hello@tidyway.ca" className="hover:text-white transition-colors">
                   hello@tidyway.ca
                 </a>
               </li>
               <li>London, Ontario</li>
+              <li className="font-bold italic max-w-xs">Questions? Open a live chat with us by using the icon in the bottom corner.</li>
             </ul>
           </div>
         </div>

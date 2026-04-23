@@ -5,6 +5,7 @@ import HowItWorks from '@/components/HowItWorks';
 import Services from '@/components/Services';
 import CleaningChecklist from '@/components/CleaningChecklist';
 import Pricing from '@/components/Pricing';
+import BeforeAfter from '@/components/BeforeAfter';
 import WhyTidyway from '@/components/WhyTidyway';
 import ServiceAreas from '@/components/ServiceAreas';
 import Reviews from '@/components/Reviews';
@@ -21,6 +22,7 @@ export default function Home() {
         <Services />
         <CleaningChecklist />
         <Pricing />
+        <BeforeAfter />
         <WhyTidyway />
         <Reviews />
         <ServiceAreas />

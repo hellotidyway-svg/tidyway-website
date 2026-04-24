@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useRouter } from 'next/navigation';
 import {
   ADD_ONS,
   BEDROOM_OPTIONS,
@@ -14,6 +17,10 @@ import {
   type Bedrooms,
   type Bathrooms,
 } from '@/lib/pricing';
+
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,14 +46,16 @@ interface FormState {
   homeAccess: HomeAccess | '';
   accessNotes: string;
   specialInstructions: string;
+  smsOptIn: boolean;
 }
 
-type FormErrors = Partial<Record<keyof FormState, string>>;
+type FormErrors = Partial<Record<keyof FormState | 'card' | 'submit', string>>;
 
+// Item 5: Pre-select defaults — bedrooms=2, bathrooms=1
 const INITIAL_FORM: FormState = {
   frequency: 'one-time',
-  bedrooms: '',
-  bathrooms: '',
+  bedrooms: '2',
+  bathrooms: '1',
   addOnIds: [],
   date: '',
   timeSlot: '',
@@ -62,6 +71,7 @@ const INITIAL_FORM: FormState = {
   homeAccess: '',
   accessNotes: '',
   specialInstructions: '',
+  smsOptIn: true,
 };
 
 const TIME_SLOTS: TimeSlot[] = ['9:00 AM', '12:00 PM', '3:00 PM'];
@@ -191,6 +201,124 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
   );
 }
 
+// ─── Trust Sidebar (Item 1) ───────────────────────────────────────────────────
+
+function TrustSidebar() {
+  return (
+    <div className="space-y-4">
+      {/* Block 1: Review card */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div className="flex gap-0.5 mb-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+        <p className="text-gray-600 text-sm leading-relaxed mb-4">
+          &ldquo;TidyWay did an incredible job on our home. The team was professional, on time, and the house looked spotless. Will definitely be booking again!&rdquo;
+        </p>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#0F1C3F] text-white text-xs font-bold flex items-center justify-center shrink-0">
+            S
+          </div>
+          <div>
+            <p className="text-xs font-bold text-[#0F1C3F]">Sarah M.</p>
+            <p className="text-[10px] text-[#2DD4A7] font-semibold">Verified Review</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Block 2: Why TidyWay */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <p className="text-xs font-extrabold text-[#0F1C3F] uppercase tracking-wider mb-3">Why TidyWay?</p>
+        {[
+          'Background-checked cleaners',
+          '$2M liability insurance',
+          'Happiness guarantee',
+          'Same cleaner every visit',
+          '24hr cancellation policy',
+        ].map(point => (
+          <div key={point} className="flex items-center gap-2.5 py-1.5">
+            <span className="w-4 h-4 rounded-full bg-[#2DD4A7]/20 text-[#2DD4A7] text-[10px] font-bold flex items-center justify-center shrink-0">
+              ✓
+            </span>
+            <span className="text-gray-700 text-xs">{point}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Block 3: Questions */}
+      <div className="bg-[#0F1C3F] rounded-2xl p-5">
+        <p className="text-xs font-extrabold text-white uppercase tracking-wider mb-1">Questions?</p>
+        <p className="text-white/60 text-xs mb-2">Email us</p>
+        <a
+          href="mailto:hello@tidyway.ca"
+          className="text-[#2DD4A7] text-sm font-semibold hover:underline"
+        >
+          hello@tidyway.ca
+        </a>
+        <p className="text-white/50 text-xs mt-2">We normally reply within just a few hours!</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── FAQ Accordion (Item 2) ───────────────────────────────────────────────────
+
+const FAQ_ITEMS = [
+  {
+    q: 'How does booking work?',
+    a: 'Select your home details, pick a date and time, and enter your payment info. We hold your card 48 hours before your appointment and only charge it once the clean is completed.',
+  },
+  {
+    q: 'When will I get a confirmation?',
+    a: 'You will receive a booking confirmation by email immediately after completing your booking.',
+  },
+  {
+    q: 'Do I need to be home during the cleaning?',
+    a: 'Not at all. You can provide lockbox details, a hidden key location, or any other access instructions during booking.',
+  },
+  {
+    q: 'Can I reschedule my booking?',
+    a: 'Yes. You can reschedule at no charge up to 24 hours before your appointment.',
+  },
+  {
+    q: 'Are your cleaners background-checked?',
+    a: 'Yes. Every TidyWay cleaner goes through a thorough background check and is fully insured before their first job.',
+  },
+];
+
+function FAQAccordion() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  return (
+    <section className="mt-8">
+      <p className={labelClass}>Frequently Asked Questions</p>
+      <div className="border border-gray-100 rounded-xl overflow-hidden divide-y divide-gray-100">
+        {FAQ_ITEMS.map((item, i) => (
+          <div key={i}>
+            <button
+              type="button"
+              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              className="w-full flex items-center justify-between px-4 py-3.5 text-left bg-white hover:bg-gray-50 transition-colors"
+            >
+              <span className="text-sm font-semibold text-[#0F1C3F] pr-4">{item.q}</span>
+              <span className="text-[#2DD4A7] font-bold text-lg shrink-0 leading-none">
+                {openIndex === i ? '−' : '+'}
+              </span>
+            </button>
+            {openIndex === i && (
+              <div className="px-4 pb-4 bg-white">
+                <p className="text-sm text-gray-600 leading-relaxed">{item.a}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ─── Order Summary ────────────────────────────────────────────────────────────
 
 function OrderSummary({ form, price, duration }: {
@@ -274,13 +402,40 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
-// ─── Main Form Component ──────────────────────────────────────────────────────
+// ─── Card Brand Logos (Item 4) ────────────────────────────────────────────────
 
-export default function BookingForm() {
+function CardBrandLogos() {
+  return (
+    <div className="flex items-center gap-1.5 mt-2">
+      <span className="inline-flex items-center px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-[9px] font-black text-blue-900 tracking-tight">
+        VISA
+      </span>
+      <span className="inline-flex items-center gap-0 px-1 py-0.5 bg-gray-100 border border-gray-200 rounded">
+        <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+          <circle cx="8" cy="7" r="6" fill="#EB001B" fillOpacity="0.85" />
+          <circle cx="14" cy="7" r="6" fill="#F79E1B" fillOpacity="0.85" />
+          <path d="M11 2.5a6 6 0 0 1 0 9A6 6 0 0 1 11 2.5z" fill="#FF5F00" fillOpacity="0.9" />
+        </svg>
+      </span>
+      <span className="inline-flex items-center px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-[9px] font-black text-blue-700 tracking-tight">
+        AMEX
+      </span>
+    </div>
+  );
+}
+
+// ─── Inner Form (uses Stripe hooks) ──────────────────────────────────────────
+
+function BookingFormInner() {
+  const stripe = useStripe();
+  const elements = useElements();
+  const router = useRouter();
+
   const [step, setStep] = useState<1 | 2>(1);
   const [isVisible, setIsVisible] = useState(true);
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const priceInput = {
     bedrooms: form.bedrooms,
@@ -291,10 +446,17 @@ export default function BookingForm() {
   const price = calculatePrice(priceInput);
   const duration = calculateDuration(priceInput);
 
-  const set = <K extends keyof FormState>(field: K, value: FormState[K]) => {
+  // Item 7: savings vs one-time
+  const oneTimePrice =
+    form.frequency !== 'one-time'
+      ? calculatePrice({ ...priceInput, frequency: 'one-time' })
+      : null;
+  const savings = oneTimePrice && price ? oneTimePrice - price : null;
+
+  const set = useCallback(<K extends keyof FormState>(field: K, value: FormState[K]) => {
     setForm(prev => ({ ...prev, [field]: value }));
     setErrors(prev => ({ ...prev, [field]: undefined }));
-  };
+  }, []);
 
   const toggleAddOn = (id: string) => {
     setForm(prev => ({
@@ -333,168 +495,238 @@ export default function BookingForm() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) return;
+    if (!stripe || !elements) return;
 
-    const selectedAddOns = ADD_ONS.filter(a => form.addOnIds.includes(a.id));
+    const cardElement = elements.getElement(CardElement);
+    if (!cardElement) {
+      setErrors(prev => ({ ...prev, card: 'Card details are required' }));
+      return;
+    }
 
-    console.log('TidyWay Booking Submission:', {
-      frequency: form.frequency,
-      bedrooms: form.bedrooms,
-      bathrooms: form.bathrooms,
-      addOns: selectedAddOns.map(a => ({ id: a.id, label: a.label, price: a.price })),
-      estimatedPrice: price,
-      estimatedDuration: duration,
-      date: form.date,
-      timeSlot: form.timeSlot,
-      customer: {
-        firstName: form.firstName,
-        lastName: form.lastName,
-        email: form.email,
-        phone: form.phone,
-      },
-      address: {
-        line1: form.address1,
-        line2: form.address2,
-        city: form.city,
-        province: form.province,
-        postalCode: form.postalCode,
-      },
-      homeAccess: {
-        type: form.homeAccess,
-        notes: form.accessNotes,
-      },
-      specialInstructions: form.specialInstructions,
-    });
+    setIsSubmitting(true);
+    setErrors({});
+
+    try {
+      // 1. Create Stripe customer + setup intent
+      const siRes = await fetch('/api/booking/setup-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: form.email }),
+      });
+      const siData = await siRes.json();
+      if (!siRes.ok) throw new Error(siData.error ?? 'Could not initialise payment');
+
+      const { clientSecret, customerId } = siData;
+
+      // 2. Confirm card setup (tokenises the card)
+      const { error: stripeError, setupIntent } = await stripe.confirmCardSetup(clientSecret, {
+        payment_method: { card: cardElement },
+      });
+
+      if (stripeError) {
+        setErrors(prev => ({ ...prev, card: stripeError.message ?? 'Card verification failed' }));
+        setIsSubmitting(false);
+        return;
+      }
+
+      const paymentMethodId =
+        typeof setupIntent.payment_method === 'string'
+          ? setupIntent.payment_method
+          : setupIntent.payment_method?.id ?? '';
+
+      // 3. Write booking to Supabase
+      const selectedAddOns = ADD_ONS.filter(a => form.addOnIds.includes(a.id));
+
+      const createRes = await fetch('/api/booking/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerId,
+          paymentMethodId,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          address: {
+            line1: form.address1,
+            line2: form.address2 || undefined,
+            city: form.city,
+            province: form.province,
+            postalCode: form.postalCode,
+          },
+          serviceDate: form.date,
+          serviceTime: form.timeSlot,
+          frequency: form.frequency,
+          bedrooms: form.bedrooms,
+          bathrooms: form.bathrooms,
+          addOns: selectedAddOns.map(a => ({ id: a.id, label: a.label, price: a.price })),
+          totalPrice: price ?? 0,
+          estimatedDuration: duration ?? '',
+          accessType: form.homeAccess,
+          accessNotes: form.accessNotes || undefined,
+          specialInstructions: form.specialInstructions || undefined,
+          smsOptIn: form.smsOptIn,
+        }),
+      });
+      const createData = await createRes.json();
+      if (!createRes.ok) throw new Error(createData.error ?? 'Could not save booking');
+
+      // 4. Redirect to confirmation
+      router.push(`/booking-confirmed?id=${createData.bookingId}`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+      setErrors(prev => ({ ...prev, submit: message }));
+      setIsSubmitting(false);
+    }
   };
 
   // ─── Step 1: Configure Your Clean ─────────────────────────────────────────
 
   const renderStep1 = () => (
-    <div className="max-w-2xl mx-auto px-4 pt-8 pb-36">
-      <h1 className="text-2xl md:text-3xl font-extrabold text-[#0F1C3F] mb-1">
-        Configure Your Clean
-      </h1>
-      <p className="text-gray-500 text-sm mb-8">
-        Select your home details — your price updates instantly below.
-      </p>
+    <div className="max-w-5xl mx-auto px-4 pt-8 pb-36">
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        {/* ── Left: form content ── */}
+        <div className="w-full lg:w-[60%]">
+          {/* Item 6: Step progress indicator */}
+          <p className="text-xs font-semibold text-gray-400 mb-2">
+            <span className="text-[#2DD4A7]">Step 1</span> of 2
+          </p>
 
-      {/* Frequency */}
-      <section className="mb-8">
-        <p className={labelClass}>Cleaning Frequency</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {FREQUENCIES.map(freq => (
-            <button
-              key={freq}
-              type="button"
-              onClick={() => set('frequency', freq)}
-              className={`
-                py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center
-                ${form.frequency === freq
-                  ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
-                  : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
-                }
-              `}
-            >
-              {FREQUENCY_LABELS[freq]}
-              {FREQUENCY_DISCOUNTS[freq] !== null && (
-                <span className="block text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
-                  Save {FREQUENCY_DISCOUNTS[freq]}%
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </section>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-[#0F1C3F] mb-1">
+            Configure Your Clean
+          </h1>
+          <p className="text-gray-500 text-sm mb-8">
+            Select your home details — your price updates instantly below.
+          </p>
 
-      {/* Bedrooms */}
-      <section className="mb-8">
-        <p className={labelClass}>Bedrooms</p>
-        <div className="flex flex-wrap gap-2">
-          {BEDROOM_OPTIONS.map(b => (
-            <button
-              key={b}
-              type="button"
-              onClick={() => set('bedrooms', b)}
-              className={`
-                px-5 py-2.5 rounded-full text-sm font-semibold transition-colors
-                ${form.bedrooms === b
-                  ? 'bg-[#2DD4A7] text-[#0F1C3F]'
-                  : 'bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] hover:bg-gray-200'
-                }
-              `}
-            >
-              {b}
-            </button>
-          ))}
-        </div>
-      </section>
+          {/* Frequency */}
+          <section className="mb-8">
+            <p className={labelClass}>Cleaning Frequency</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {FREQUENCIES.map(freq => (
+                <button
+                  key={freq}
+                  type="button"
+                  onClick={() => set('frequency', freq)}
+                  className={`
+                    py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center
+                    ${form.frequency === freq
+                      ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
+                      : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
+                    }
+                  `}
+                >
+                  {FREQUENCY_LABELS[freq]}
+                  {FREQUENCY_DISCOUNTS[freq] !== null && (
+                    <span className="block text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
+                      Save {FREQUENCY_DISCOUNTS[freq]}%
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </section>
 
-      {/* Bathrooms */}
-      <section className="mb-8">
-        <p className={labelClass}>Bathrooms</p>
-        <div className="flex flex-wrap gap-2">
-          {BATHROOM_OPTIONS.map(b => (
-            <button
-              key={b}
-              type="button"
-              onClick={() => set('bathrooms', b)}
-              className={`
-                px-5 py-2.5 rounded-full text-sm font-semibold transition-colors
-                ${form.bathrooms === b
-                  ? 'bg-[#2DD4A7] text-[#0F1C3F]'
-                  : 'bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] hover:bg-gray-200'
-                }
-              `}
-            >
-              {b}
-            </button>
-          ))}
-        </div>
-      </section>
+          {/* Bedrooms */}
+          <section className="mb-8">
+            <p className={labelClass}>Bedrooms</p>
+            <div className="flex flex-wrap gap-2">
+              {BEDROOM_OPTIONS.map(b => (
+                <button
+                  key={b}
+                  type="button"
+                  onClick={() => set('bedrooms', b)}
+                  className={`
+                    px-5 py-2.5 rounded-full text-sm font-semibold transition-colors
+                    ${form.bedrooms === b
+                      ? 'bg-[#2DD4A7] text-[#0F1C3F]'
+                      : 'bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] hover:bg-gray-200'
+                    }
+                  `}
+                >
+                  {b}
+                </button>
+              ))}
+            </div>
+          </section>
 
-      {/* Add-ons */}
-      <section>
-        <p className={labelClass}>
-          Add-ons{' '}
-          <span className="normal-case text-gray-400 font-normal tracking-normal">(optional)</span>
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {ADD_ONS.map(addon => {
-            const selected = form.addOnIds.includes(addon.id);
-            return (
-              <button
-                key={addon.id}
-                type="button"
-                onClick={() => toggleAddOn(addon.id)}
-                className={`
-                  text-left p-4 rounded-xl border-2 transition-all
-                  ${selected
-                    ? 'border-[#2DD4A7] bg-[#2DD4A7]/10'
-                    : 'border-gray-200 bg-white hover:border-[#2DD4A7]/50'
-                  }
-                `}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="font-bold text-[#0F1C3F] text-sm">{addon.label}</p>
-                    <p className="text-gray-500 text-xs mt-0.5 leading-relaxed">{addon.description}</p>
-                    {addon.durationMinutes > 0 && (
-                      <p className="text-gray-400 text-xs mt-1">+{addon.durationMinutes} min</p>
-                    )}
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="font-extrabold text-[#0F1C3F] text-sm">+${addon.price}</p>
-                    {selected && (
-                      <span className="text-[#2DD4A7] text-xs font-bold">✓ Added</span>
-                    )}
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+          {/* Bathrooms */}
+          <section className="mb-8">
+            <p className={labelClass}>Bathrooms</p>
+            <div className="flex flex-wrap gap-2">
+              {BATHROOM_OPTIONS.map(b => (
+                <button
+                  key={b}
+                  type="button"
+                  onClick={() => set('bathrooms', b)}
+                  className={`
+                    px-5 py-2.5 rounded-full text-sm font-semibold transition-colors
+                    ${form.bathrooms === b
+                      ? 'bg-[#2DD4A7] text-[#0F1C3F]'
+                      : 'bg-[#F3F4F6] text-[#374151] border border-[#D1D5DB] hover:bg-gray-200'
+                    }
+                  `}
+                >
+                  {b}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* Add-ons */}
+          <section>
+            <p className={labelClass}>
+              Add-ons{' '}
+              <span className="normal-case text-gray-400 font-normal tracking-normal">(optional)</span>
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {ADD_ONS.map(addon => {
+                const selected = form.addOnIds.includes(addon.id);
+                return (
+                  <button
+                    key={addon.id}
+                    type="button"
+                    onClick={() => toggleAddOn(addon.id)}
+                    className={`
+                      text-left p-4 rounded-xl border-2 transition-all
+                      ${selected
+                        ? 'border-[#2DD4A7] bg-[#2DD4A7]/10'
+                        : 'border-gray-200 bg-white hover:border-[#2DD4A7]/50'
+                      }
+                    `}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-bold text-[#0F1C3F] text-sm">{addon.label}</p>
+                        <p className="text-gray-500 text-xs mt-0.5 leading-relaxed">{addon.description}</p>
+                        {addon.durationMinutes > 0 && (
+                          <p className="text-gray-400 text-xs mt-1">+{addon.durationMinutes} min</p>
+                        )}
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="font-extrabold text-[#0F1C3F] text-sm">+${addon.price}</p>
+                        {selected && (
+                          <span className="text-[#2DD4A7] text-xs font-bold">✓ Added</span>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Item 2: FAQ Accordion — between add-ons and sticky footer */}
+          <FAQAccordion />
         </div>
-      </section>
+
+        {/* ── Right: Trust Sidebar ── */}
+        <div className="w-full lg:w-[40%] lg:sticky lg:top-8">
+          <TrustSidebar />
+        </div>
+      </div>
     </div>
   );
 
@@ -514,6 +746,10 @@ export default function BookingForm() {
         {/* ── Left: Form fields ── */}
         <div className="w-full lg:w-[60%] space-y-7">
           <div>
+            {/* Item 6: Step progress indicator */}
+            <p className="text-xs font-semibold text-gray-400 mb-2">
+              <span className="text-[#2DD4A7]">Step 2</span> of 2
+            </p>
             <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1">Schedule & Confirm</h2>
             <p className="text-gray-500 text-sm">Fill in your details to complete your booking.</p>
           </div>
@@ -726,15 +962,37 @@ export default function BookingForm() {
             />
           </section>
 
-          {/* Stripe placeholder */}
+          {/* Stripe card element — Items 3 & 4 */}
           <section>
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
                 Secure Your Booking
               </p>
-              <div className="border border-gray-200 rounded-lg px-4 py-3.5 bg-gray-50 min-h-[44px] flex items-center">
-                <p className="text-gray-400 text-sm">Card details will load here</p>
+              <div
+                className={`border rounded-lg px-4 py-3.5 bg-white transition-colors ${
+                  errors.card ? 'border-red-400' : 'border-gray-200'
+                }`}
+                style={{ position: 'relative', zIndex: 10, pointerEvents: 'auto' }}
+              >
+                <CardElement
+                  options={{
+                    style: {
+                      base: {
+                        fontSize: '16px',
+                        color: '#0F1C3F',
+                        fontFamily: 'Inter, sans-serif',
+                        '::placeholder': { color: '#9ca3af' },
+                      },
+                      invalid: { color: '#ef4444' },
+                    },
+                  }}
+                  onChange={() => setErrors(prev => ({ ...prev, card: undefined }))}
+                />
               </div>
+              {errors.card && (
+                <p className="text-red-500 text-xs mt-1.5">{errors.card}</p>
+              )}
+              {/* Item 3: updated payment timing copy */}
               <p className="text-gray-400 text-xs mt-3 flex items-center gap-1.5">
                 <svg
                   className="w-3.5 h-3.5 shrink-0"
@@ -749,22 +1007,55 @@ export default function BookingForm() {
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
-                Your card is saved securely. No charge until after your clean is complete.
+                Your card is held 48 hours before your appointment and only charged once your clean is completed. You can cancel for free up to 24 hours before.
               </p>
+              {/* Item 4: card brand logos */}
+              <CardBrandLogos />
             </div>
           </section>
+
+          {/* SMS opt-in */}
+          <section>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.smsOptIn}
+                onChange={e => set('smsOptIn', e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded accent-[#2DD4A7] shrink-0"
+              />
+              <span className="text-xs text-gray-500 leading-relaxed">
+                I agree to receive SMS updates from TidyWay about my booking. Message & data rates may apply. Reply STOP to opt out.
+              </span>
+            </label>
+          </section>
+
+          {/* Submit error */}
+          {errors.submit && (
+            <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+              <p className="text-red-600 text-sm">{errors.submit}</p>
+            </div>
+          )}
 
           {/* Submit */}
           <div className="pb-8">
             <button
               type="button"
               onClick={handleSubmit}
-              className="w-full bg-[#2DD4A7] hover:bg-[#22c497] text-white font-extrabold py-4 rounded-xl text-lg transition-colors flex flex-col items-center gap-0.5"
+              disabled={isSubmitting || !stripe}
+              className={`
+                w-full font-extrabold py-4 rounded-xl text-lg transition-colors flex flex-col items-center gap-0.5
+                ${isSubmitting || !stripe
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-[#2DD4A7] hover:bg-[#22c497] text-white'
+                }
+              `}
             >
-              <span>Book My Clean →</span>
-              <span className="text-xs font-normal italic text-white/80">
-                ✓ No charge until after your clean
-              </span>
+              <span>{isSubmitting ? 'Processing…' : 'Book My Clean →'}</span>
+              {!isSubmitting && (
+                <span className="text-xs font-normal italic text-white/80">
+                  ✓ No charge until after your clean
+                </span>
+              )}
             </button>
 
             <p className="text-center text-gray-400 text-[10px] mt-3">
@@ -781,9 +1072,10 @@ export default function BookingForm() {
           </div>
         </div>
 
-        {/* ── Right: Order summary ── */}
-        <div className="w-full lg:w-[40%] lg:sticky lg:top-8">
+        {/* ── Right: Order summary + Trust Sidebar ── */}
+        <div className="w-full lg:w-[40%] lg:sticky lg:top-8 space-y-6">
           <OrderSummary form={form} price={price} duration={duration} />
+          <TrustSidebar />
         </div>
       </div>
     </div>
@@ -800,13 +1092,19 @@ export default function BookingForm() {
       {/* Sticky price footer — Step 1 only */}
       {step === 1 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-2xl">
-          <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-4">
+          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
             <div className="flex-1 min-w-0">
               {price ? (
                 <>
                   <p className="text-2xl font-extrabold text-[#0F1C3F] leading-tight">${price}</p>
                   {duration && (
                     <p className="text-xs text-gray-500 mt-0.5">Est. {duration}</p>
+                  )}
+                  {/* Item 7: savings callout */}
+                  {savings !== null && savings > 0 && (
+                    <p className="text-xs text-[#2DD4A7] font-semibold mt-0.5">
+                      You save ${savings} vs one-time
+                    </p>
                   )}
                 </>
               ) : (
@@ -815,23 +1113,39 @@ export default function BookingForm() {
                 </p>
               )}
             </div>
-            <button
-              type="button"
-              disabled={!form.bedrooms || !form.bathrooms}
-              onClick={() => transitionTo(2)}
-              className={`
-                shrink-0 px-5 py-3 rounded-xl font-extrabold text-sm transition-all
-                ${form.bedrooms && form.bathrooms
-                  ? 'bg-[#2DD4A7] hover:bg-[#22c497] text-white shadow-md shadow-[#2DD4A7]/30'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }
-              `}
-            >
-              Select Date &amp; Time →
-            </button>
+            <div className="shrink-0 flex flex-col items-end gap-1.5">
+              {/* Item 8: urgency line */}
+              <p className="text-xs text-[#2DD4A7] font-medium">
+                Next available: Tomorrow · Slots filling fast
+              </p>
+              <button
+                type="button"
+                disabled={!form.bedrooms || !form.bathrooms}
+                onClick={() => transitionTo(2)}
+                className={`
+                  px-5 py-3 rounded-xl font-extrabold text-sm transition-all
+                  ${form.bedrooms && form.bathrooms
+                    ? 'bg-[#2DD4A7] hover:bg-[#22c497] text-white shadow-md shadow-[#2DD4A7]/30'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }
+                `}
+              >
+                Select Date &amp; Time →
+              </button>
+            </div>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+// ─── Exported wrapper — provides Stripe Elements context ──────────────────────
+
+export default function BookingForm() {
+  return (
+    <Elements stripe={stripePromise}>
+      <BookingFormInner />
+    </Elements>
   );
 }

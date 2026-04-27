@@ -20,9 +20,9 @@ export default async function AdminPage() {
   }
 
   // Fetch cleaners for all claimed bookings
-  const cleanerIds = [
-    ...new Set((bookings ?? []).map((b) => b.claimed_by).filter(Boolean) as string[]),
-  ];
+  const cleanerIds = Array.from(
+    new Set((bookings ?? []).map((b) => b.claimed_by).filter(Boolean) as string[])
+  );
 
   const cleanerMap: Record<string, string> = {};
   if (cleanerIds.length > 0) {

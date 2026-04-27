@@ -428,7 +428,7 @@ export default function BookingsTable({ bookings }: { bookings: AdminBooking[] }
 
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-xs border-collapse min-w-[640px]">
+              <table className="w-full text-xs border-collapse min-w-[640px] table-fixed">
                 <thead>
                   <tr className="border-b border-gray-100">
                     <th className="w-16 px-2 py-3 border-r border-gray-100" />

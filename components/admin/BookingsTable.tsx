@@ -59,14 +59,20 @@ function formatDate(date: string, time: string) {
 }
 
 function parseTimeToHour(time: string): number {
-  const match = time.match(/(\d+):(\d+)\s*(AM|PM)/i);
-  if (!match) return 0;
-  let hour = parseInt(match[1]);
-  const minutes = parseInt(match[2]);
-  const period = match[3].toUpperCase();
-  if (period === 'PM' && hour !== 12) hour += 12;
-  if (period === 'AM' && hour === 12) hour = 0;
-  return hour + minutes / 60;
+  // Try 12-hour format first: "10:00 AM" / "2:30 PM"
+  const ampm = time.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  if (ampm) {
+    let hour = parseInt(ampm[1]);
+    const minutes = parseInt(ampm[2]);
+    const period = ampm[3].toUpperCase();
+    if (period === 'PM' && hour !== 12) hour += 12;
+    if (period === 'AM' && hour === 12) hour = 0;
+    return hour + minutes / 60;
+  }
+  // Fall back to 24-hour format: "10:00" / "14:30" / "10:00:00"
+  const h24 = time.match(/^(\d+):(\d+)/);
+  if (h24) return parseInt(h24[1]) + parseInt(h24[2]) / 60;
+  return -1;
 }
 
 function formatHour(h: number): string {

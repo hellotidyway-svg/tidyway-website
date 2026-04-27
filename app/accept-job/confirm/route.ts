@@ -45,8 +45,9 @@ export async function POST(req: Request) {
   const redirectBase = `/accept-job?token=${encodeURIComponent(token)}${cleanerId ? `&cleaner=${encodeURIComponent(cleanerId)}` : ''}`;
 
   if (error || !updated || updated.length === 0) {
+    if (error) console.error('[accept-job/confirm] Atomic update failed:', error);
     // Race condition: another cleaner claimed it first
-    return NextResponse.redirect(new URL(`${redirectBase}&taken=1`, origin));
+    return NextResponse.redirect(new URL(`${redirectBase}&taken=1`, origin), { status: 303 });
   }
 
   const booking = updated[0];
@@ -108,7 +109,7 @@ export async function POST(req: Request) {
     }),
   });
 
-  return NextResponse.redirect(new URL(`${redirectBase}&accepted=1`, origin));
+  return NextResponse.redirect(new URL(`${redirectBase}&accepted=1`, origin), { status: 303 });
 }
 
 function buildCleanerConfirmEmail(data: {

@@ -10,19 +10,7 @@ interface Props {
 }
 
 export default async function AcceptJobPage({ searchParams }: Props) {
-  const { token, cleaner: cleanerId, accepted, taken } = searchParams;
-
-  if (accepted === '1') {
-    return (
-      <Shell>
-        <div className="text-5xl text-center mb-4">✅</div>
-        <h1 className="text-2xl font-extrabold text-[#0F1C3F] text-center mb-2">Job Confirmed!</h1>
-        <p className="text-gray-500 text-sm text-center leading-relaxed">
-          You&apos;ve successfully claimed this job. Check your email for full details and the service address.
-        </p>
-      </Shell>
-    );
-  }
+  const { token, cleaner: cleanerId, accepted } = searchParams;
 
   if (!token) {
     return (
@@ -72,20 +60,6 @@ export default async function AcceptJobPage({ searchParams }: Props) {
     );
   }
 
-  if (booking.status === 'assigned') {
-    return (
-      <Shell>
-        <div className="text-5xl text-center mb-4">⚡</div>
-        <h1 className="text-2xl font-extrabold text-[#0F1C3F] text-center mb-2">
-          This job has already been claimed.
-        </h1>
-        <p className="text-gray-500 text-sm text-center leading-relaxed">
-          Another cleaner accepted this job first. Watch your inbox for the next available job.
-        </p>
-      </Shell>
-    );
-  }
-
   const freq = booking.frequency
     ? booking.frequency.charAt(0).toUpperCase() + booking.frequency.slice(1)
     : '';
@@ -99,6 +73,55 @@ export default async function AcceptJobPage({ searchParams }: Props) {
   ]
     .filter(Boolean)
     .join(', ');
+  const accessInfo = booking.access_notes
+    ? `${booking.access_type} — ${booking.access_notes}`
+    : booking.access_type;
+
+  if (accepted === '1') {
+    return (
+      <Shell>
+        <div className="text-5xl text-center mb-4">✅</div>
+        <h1 className="text-2xl font-extrabold text-[#0F1C3F] text-center mb-1">Job Confirmed!</h1>
+        <p className="text-gray-500 text-sm text-center mb-6">
+          You&apos;ve claimed this job. A confirmation email has been sent to you.
+        </p>
+
+        <div className="bg-gray-50 rounded-xl p-5 mb-4 space-y-3">
+          <DetailRow label="Service" value={serviceDescription} />
+          <DetailRow label="Date" value={booking.service_date} />
+          <DetailRow label="Time" value={booking.service_time} />
+          <DetailRow label="Address" value={fullAddress} />
+          <DetailRow label="Customer" value={booking.first_name} />
+          <DetailRow label="Est. Duration" value={booking.estimated_duration} />
+          <DetailRow label="Home Access" value={accessInfo} />
+          {booking.special_instructions && (
+            <DetailRow label="Instructions" value={booking.special_instructions} />
+          )}
+        </div>
+
+        <p className="text-center text-gray-400 text-xs">
+          Questions? Email{' '}
+          <a href="mailto:hello@tidyway.ca" className="text-[#2DD4A7] underline">
+            hello@tidyway.ca
+          </a>
+        </p>
+      </Shell>
+    );
+  }
+
+  if (booking.status === 'assigned') {
+    return (
+      <Shell>
+        <div className="text-5xl text-center mb-4">⚡</div>
+        <h1 className="text-2xl font-extrabold text-[#0F1C3F] text-center mb-2">
+          This job has already been claimed.
+        </h1>
+        <p className="text-gray-500 text-sm text-center leading-relaxed">
+          Another cleaner accepted this job first. Watch your inbox for the next available job.
+        </p>
+      </Shell>
+    );
+  }
 
   return (
     <Shell>

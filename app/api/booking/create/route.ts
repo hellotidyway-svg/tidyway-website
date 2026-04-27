@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
     const { data: booking, error: bookingError } = await supabase
       .from('bookings')
       .insert({
+        service_type: 'home_cleaning',
         stripe_customer_id: body.customerId,
         payment_method_id: body.paymentMethodId,
         first_name: body.firstName,

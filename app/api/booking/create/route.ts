@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
     // Cleaner job notification emails
     const { data: cleaners, error: cleanersError } = await supabase
       .from('cleaners')
-      .select('id, name, email')
+      .select('id, first_name, last_name, email')
       .eq('is_active', true);
 
     if (cleanersError) {
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
             to: cleaner.email,
             subject: `New Job Available – ${body.serviceDate} at ${body.serviceTime}`,
             html: buildCleanerNotificationEmail({
-              cleanerName: cleaner.name,
+              cleanerName: `${cleaner.first_name} ${cleaner.last_name}`,
               serviceDescription,
               date: body.serviceDate,
               time: body.serviceTime,
@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
 
       results.forEach((result, i) => {
         if (result.status === 'rejected') {
-          console.error(`[booking/create] Failed to notify cleaner ${cleaners[i].id}:`, result.reason);
+          console.error(`[booking/create] Failed to notify cleaner ${cleaners[i].id} (${cleaners[i].first_name}):`, result.reason);
         }
       });
     }

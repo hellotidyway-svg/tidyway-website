@@ -477,8 +477,8 @@ export default function BookingsTable({ bookings }: { bookings: AdminBooking[] }
                                 <div className="font-semibold truncate">
                                   {b.first_name} {b.last_name}
                                 </div>
-                                <div className="truncate opacity-70 capitalize">
-                                  {b.service_type.replace(/_/g, ' ')}
+                                <div className="truncate opacity-70">
+                                  {b.address_line1}
                                 </div>
                               </Link>
                             ))}

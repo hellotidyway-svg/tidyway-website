@@ -105,13 +105,17 @@ export async function POST(request: NextRequest) {
     });
 
     // Cleaner job notification emails
-    const { data: cleaners } = await supabase
+    const { data: cleaners, error: cleanersError } = await supabase
       .from('cleaners')
       .select('id, name, email')
       .eq('is_active', true);
 
+    if (cleanersError) {
+      console.error('[booking/create] Failed to fetch cleaners:', cleanersError);
+    }
+
     if (cleaners && cleaners.length > 0) {
-      await Promise.all(
+      const results = await Promise.allSettled(
         cleaners.map((cleaner) =>
           resend.emails.send({
             from: 'noreply@mail.tidyway.ca',
@@ -129,6 +133,12 @@ export async function POST(request: NextRequest) {
           })
         )
       );
+
+      results.forEach((result, i) => {
+        if (result.status === 'rejected') {
+          console.error(`[booking/create] Failed to notify cleaner ${cleaners[i].id}:`, result.reason);
+        }
+      });
     }
 
     return NextResponse.json({ success: true, bookingId: booking.id });

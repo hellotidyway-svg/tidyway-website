@@ -35,11 +35,27 @@ export default async function AcceptJobPage({ searchParams }: Props) {
     );
   }
 
-  const { data: booking } = await supabase
+  const { data: booking, error: bookingError } = await supabase
     .from('bookings')
     .select('*')
     .eq('notification_token', token)
-    .single();
+    .maybeSingle();
+
+  if (bookingError) {
+    console.error('[accept-job] Token lookup failed:', bookingError);
+    return (
+      <Shell>
+        <h1 className="text-2xl font-extrabold text-[#0F1C3F] text-center mb-2">Something Went Wrong</h1>
+        <p className="text-gray-500 text-sm text-center">
+          We couldn&apos;t load this job. Contact{' '}
+          <a href="mailto:hello@tidyway.ca" className="text-[#2DD4A7] underline">
+            hello@tidyway.ca
+          </a>{' '}
+          for help.
+        </p>
+      </Shell>
+    );
+  }
 
   if (!booking) {
     return (
@@ -56,7 +72,7 @@ export default async function AcceptJobPage({ searchParams }: Props) {
     );
   }
 
-  if (booking.status === 'assigned' || taken === '1') {
+  if (booking.status === 'assigned') {
     return (
       <Shell>
         <div className="text-5xl text-center mb-4">⚡</div>

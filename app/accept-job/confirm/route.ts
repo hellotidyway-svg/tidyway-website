@@ -19,14 +19,17 @@ export async function POST(req: Request) {
   let cleanerEmail = '';
   let cleanerName = 'Unknown';
   if (cleanerId) {
-    const { data: cleaner } = await supabase
+    const { data: cleaner, error: cleanerError } = await supabase
       .from('cleaners')
-      .select('email, name')
+      .select('email, first_name, last_name')
       .eq('id', cleanerId)
       .single();
+    if (cleanerError) {
+      console.error('[accept-job/confirm] Cleaner lookup failed:', cleanerError);
+    }
     if (cleaner) {
       cleanerEmail = cleaner.email;
-      cleanerName = cleaner.name;
+      cleanerName = `${cleaner.first_name} ${cleaner.last_name}`;
     }
   }
 

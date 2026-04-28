@@ -297,7 +297,7 @@ function TrustSidebar() {
         {[
           'Background-checked cleaners',
           '$2M liability insurance',
-          'Happiness guarantee',
+          'Happiness Guarantee or Free Reclean',
           'Same cleaner every visit',
           '24hr cancellation policy',
         ].map(point => (
@@ -440,7 +440,7 @@ function OrderSummary({ form, price, duration }: {
         {[
           'Background-checked cleaners',
           '$2M liability insurance',
-          'Happiness guarantee',
+          'Happiness Guarantee or Free Reclean',
           '24hr cancellation policy',
         ].map(point => (
           <div key={point} className="flex items-center gap-2.5 py-1.5">
@@ -498,6 +498,7 @@ function BookingFormInner() {
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [includedOpen, setIncludedOpen] = useState(false);
 
   const priceInput = {
     bedrooms: form.bedrooms,
@@ -660,36 +661,74 @@ function BookingFormInner() {
           <h1 className="text-2xl md:text-3xl font-extrabold text-[#0F1C3F] mb-1">
             Book Your Clean in Under 2 Minutes
           </h1>
-          <p className="text-gray-500 text-sm mb-8">
+          <p className="text-gray-500 text-sm mb-4">
             No calls, no back-and-forth — pick your details, see your price, and you&apos;re done.
           </p>
+
+          {/* Trust chips */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            {[
+              '1000+ cleans completed',
+              '$2M liability insured',
+              'Background-checked cleaners',
+            ].map(chip => (
+              <span
+                key={chip}
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#f0fdf9] border border-[#2DD4A7]/30 text-[11px] font-semibold text-[#0F1C3F]"
+              >
+                <span className="text-[#2DD4A7]">✓</span>
+                {chip}
+              </span>
+            ))}
+          </div>
 
           {/* Frequency */}
           <section className="mb-8">
             <p className={labelClass}>Cleaning Frequency</p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {FREQUENCIES.map(freq => (
-                <button
-                  key={freq}
-                  type="button"
-                  onClick={() => set('frequency', freq)}
-                  className={`
-                    py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center
-                    ${form.frequency === freq
-                      ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
-                    }
-                  `}
-                >
-                  {FREQUENCY_LABELS[freq]}
-                  {FREQUENCY_DISCOUNTS[freq] !== null && (
-                    <span className="block text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
-                      Save {FREQUENCY_DISCOUNTS[freq]}%
+                <div key={freq} className="relative">
+                  {freq === 'biweekly' && (
+                    <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 px-2 py-0.5 rounded-full bg-[#2DD4A7] text-[#0F1C3F] text-[9px] font-extrabold uppercase tracking-wide whitespace-nowrap">
+                      Most Popular
                     </span>
                   )}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => set('frequency', freq)}
+                    className={`
+                      w-full py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center
+                      ${form.frequency === freq
+                        ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
+                      }
+                    `}
+                  >
+                    {FREQUENCY_LABELS[freq]}
+                    {FREQUENCY_DISCOUNTS[freq] !== null && (
+                      <span className="block text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
+                        Save {FREQUENCY_DISCOUNTS[freq]}%
+                      </span>
+                    )}
+                  </button>
+                </div>
               ))}
             </div>
+
+            {/* Annualized savings line */}
+            {form.frequency !== 'one-time' && (() => {
+              const base = calculatePrice({ bedrooms: form.bedrooms, bathrooms: form.bathrooms, frequency: 'one-time', addOnIds: [] });
+              if (!base) return null;
+              const annualSavings =
+                form.frequency === 'weekly'    ? Math.round(base * 0.20 * 52) :
+                form.frequency === 'biweekly'  ? Math.round(base * 0.15 * 26) :
+                                                 Math.round(base * 0.10 * 12);
+              return (
+                <p className="text-[#2DD4A7] text-xs font-semibold mt-2.5 text-center">
+                  You save ~${annualSavings}/year vs. one-time
+                </p>
+              );
+            })()}
           </section>
 
           {/* Bedrooms */}
@@ -736,6 +775,36 @@ function BookingFormInner() {
                 </button>
               ))}
             </div>
+          </section>
+
+          {/* What's included expandable */}
+          <section className="mb-8">
+            <button
+              type="button"
+              onClick={() => setIncludedOpen(o => !o)}
+              className="text-sm text-gray-500 hover:text-[#0F1C3F] transition-colors font-medium"
+            >
+              What&apos;s included in every clean {includedOpen ? '▴' : '▾'}
+            </button>
+            {includedOpen && (
+              <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1.5">
+                {[
+                  'Kitchen surfaces wiped',
+                  'Bathroom scrubbed',
+                  'Vacuum all floors',
+                  'Mop hard floors',
+                  'Dusting throughout',
+                  'Mirrors cleaned',
+                  'Trash emptied',
+                  'Sinks & fixtures polished',
+                ].map(item => (
+                  <div key={item} className="flex items-center gap-1.5 text-xs text-gray-600">
+                    <span className="text-[#2DD4A7] font-bold">✓</span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
 
           {/* Add-ons */}

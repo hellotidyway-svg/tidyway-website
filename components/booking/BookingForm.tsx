@@ -200,7 +200,7 @@ function DateChip({
   const [hovered, setHovered] = useState(false);
 
   const chipStyle: React.CSSProperties = selected
-    ? { background: '#2DD4A7', color: '#0F1C3F', border: '2px solid #2DD4A7', flex: 1, minWidth: 0 }
+    ? { background: 'rgba(45,212,167,0.12)', color: '#0F1C3F', border: '2px solid #2DD4A7', flex: 1, minWidth: 0 }
     : hovered
       ? { background: 'rgba(45,212,167,0.12)', color: '#0F1C3F', border: '1px solid #2DD4A7', flex: 1, minWidth: 0 }
       : { background: '#ffffff', color: '#0F1C3F', border: '1px solid #e5e7eb', flex: 1, minWidth: 0 };

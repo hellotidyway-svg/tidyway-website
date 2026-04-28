@@ -200,10 +200,12 @@ function DateChip({
   const [hovered, setHovered] = useState(false);
 
   const chipStyle: React.CSSProperties = selected
-    ? { background: '#1D9E75', color: '#FFFFFF', border: '2px solid #1D9E75', flex: 1, minWidth: 0 }
+    ? { background: '#2DD4A7', color: '#0F1C3F', border: '2px solid #2DD4A7', flex: 1, minWidth: 0 }
     : hovered
-      ? { background: '#E1F5EE', color: '#0F6E56', border: '1px solid #9FE1CB', flex: 1, minWidth: 0 }
+      ? { background: 'rgba(45,212,167,0.12)', color: '#0F1C3F', border: '1px solid #2DD4A7', flex: 1, minWidth: 0 }
       : { background: '#ffffff', color: '#0F1C3F', border: '1px solid #e5e7eb', flex: 1, minWidth: 0 };
+
+  const mutedColor = selected ? 'rgba(15,28,63,0.6)' : hovered ? '#0F1C3F' : '#9ca3af';
 
   return (
     <button
@@ -214,13 +216,13 @@ function DateChip({
       style={chipStyle}
       className="flex flex-col items-center justify-center gap-0.5 rounded-xl py-2.5 px-1 transition-all"
     >
-      <span style={{ fontSize: isSpecial ? '8px' : '10px', fontWeight: 600, textTransform: 'uppercase', lineHeight: 1, color: selected ? 'rgba(255,255,255,0.8)' : hovered ? '#0F6E56' : '#9ca3af' }}>
+      <span style={{ fontSize: isSpecial ? '8px' : '10px', fontWeight: 600, textTransform: 'uppercase', lineHeight: 1, color: mutedColor }}>
         {label}
       </span>
-      <span style={{ fontSize: '18px', fontWeight: 800, lineHeight: 1, color: selected ? '#ffffff' : hovered ? '#0F6E56' : '#0F1C3F' }}>
+      <span style={{ fontSize: '18px', fontWeight: 800, lineHeight: 1, color: selected ? '#0F1C3F' : '#0F1C3F' }}>
         {d}
       </span>
-      <span style={{ fontSize: '10px', fontWeight: 600, color: selected ? 'rgba(255,255,255,0.8)' : hovered ? '#0F6E56' : '#9ca3af' }}>
+      <span style={{ fontSize: '10px', fontWeight: 600, color: mutedColor }}>
         {SHORT_MONTH[m - 1]}
       </span>
     </button>
@@ -237,9 +239,9 @@ function TimeSlotButton({
   const [hovered, setHovered] = useState(false);
 
   const btnStyle: React.CSSProperties = selected
-    ? { background: '#E1F5EE', color: '#0F6E56', border: '2px solid #1D9E75', flex: 1 }
+    ? { background: 'rgba(45,212,167,0.12)', color: '#0F1C3F', border: '2px solid #2DD4A7', flex: 1 }
     : hovered
-      ? { background: '#f9fafb', color: '#374151', border: '1px solid #d1d5db', flex: 1 }
+      ? { background: 'rgba(45,212,167,0.06)', color: '#0F1C3F', border: '1px solid #2DD4A7', flex: 1 }
       : { background: '#ffffff', color: '#4b5563', border: '1px solid #e5e7eb', flex: 1 };
 
   return (
@@ -251,10 +253,10 @@ function TimeSlotButton({
       style={btnStyle}
       className="flex flex-col items-center justify-center gap-0.5 py-3 px-2 rounded-xl transition-all text-center"
     >
-      <span style={{ fontSize: '14px', fontWeight: 700, lineHeight: 1, color: selected ? '#0F6E56' : hovered ? '#374151' : '#0F1C3F' }}>
+      <span style={{ fontSize: '14px', fontWeight: 700, lineHeight: 1, color: '#0F1C3F' }}>
         {label}
       </span>
-      <span style={{ fontSize: '11px', lineHeight: 1, marginTop: '2px', color: selected ? '#0F6E56' : '#9ca3af' }}>
+      <span style={{ fontSize: '11px', lineHeight: 1, marginTop: '2px', color: selected ? '#0F1C3F' : '#9ca3af' }}>
         {time}
       </span>
     </button>

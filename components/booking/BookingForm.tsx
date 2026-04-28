@@ -755,8 +755,8 @@ function BookingFormInner() {
               <div className="h-1.5 flex-1 rounded-full bg-gray-200" />
             </div>
             <div className="flex gap-1.5 mt-1">
-              <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Your Clean</p>
-              <p className="flex-1 text-center text-[11px] text-gray-400">Date &amp; Payment</p>
+              <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Booking Information</p>
+              <p className="flex-1 text-center text-[11px] text-gray-400">Select Date &amp; Time</p>
             </div>
           </div>
 
@@ -1039,8 +1039,8 @@ function BookingFormInner() {
                 <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
               </div>
               <div className="flex gap-1.5 mt-1">
-                <p className="flex-1 text-center text-[11px] text-gray-400">Your Clean</p>
-                <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Date &amp; Payment</p>
+                <p className="flex-1 text-center text-[11px] text-gray-400">Booking Information</p>
+                <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Select Date &amp; Time</p>
               </div>
             </div>
             <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1">Schedule & Confirm</h2>

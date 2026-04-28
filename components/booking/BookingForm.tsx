@@ -93,134 +93,95 @@ const inputNormal = `${inputBase} border-gray-200`;
 const inputError = `${inputBase} border-red-400 focus:ring-red-400`;
 const labelClass = 'block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2';
 
-// ─── Calendar Picker ──────────────────────────────────────────────────────────
+// ─── Date Strip ───────────────────────────────────────────────────────────────
 
-const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
-const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const SHORT_DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const SHORT_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-function CalendarPicker({ value, onChange }: { value: string; onChange: (d: string) => void }) {
+function buildAvailableDates(): string[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   const maxDate = new Date(today);
   maxDate.setDate(today.getDate() + 60);
-
-  const [viewMonth, setViewMonth] = useState(() => {
-    const d = new Date(today);
-    d.setDate(d.getDate() + 1);
-    return new Date(d.getFullYear(), d.getMonth(), 1);
-  });
-
-  const earliestMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  const canGoPrev = viewMonth.getTime() > earliestMonth.getTime();
-
-  const year = viewMonth.getFullYear();
-  const month = viewMonth.getMonth();
-  const firstDayOfWeek = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  const cells: (number | null)[] = Array(firstDayOfWeek).fill(null);
-  for (let d = 1; d <= daysInMonth; d++) cells.push(d);
-  while (cells.length % 7 !== 0) cells.push(null);
-
-  const isDisabled = (day: number) => {
-    const date = new Date(year, month, day);
-    return date <= today || date > maxDate || date.getDay() === 0;
-  };
-
-  const toDateString = (day: number) => {
-    const mm = String(month + 1).padStart(2, '0');
-    const dd = String(day).padStart(2, '0');
-    return `${year}-${mm}-${dd}`;
-  };
-
-  // Group flat cell array into rows of 7 for variable row height
-  const rows: (number | null)[][] = [];
-  for (let i = 0; i < cells.length; i += 7) {
-    rows.push(cells.slice(i, i + 7));
+  const dates: string[] = [];
+  const cursor = new Date(today);
+  cursor.setDate(cursor.getDate() + 1);
+  while (cursor <= maxDate) {
+    if (cursor.getDay() !== 0) {
+      const mm = String(cursor.getMonth() + 1).padStart(2, '0');
+      const dd = String(cursor.getDate()).padStart(2, '0');
+      dates.push(`${cursor.getFullYear()}-${mm}-${dd}`);
+    }
+    cursor.setDate(cursor.getDate() + 1);
   }
+  return dates;
+}
 
-  const rowHasSelectable = (row: (number | null)[]) =>
-    row.some(day => day !== null && !isDisabled(day));
+function CalendarPicker({ value, onChange }: { value: string; onChange: (d: string) => void }) {
+  const allDates = buildAvailableDates();
+  const PAGE = 7;
+  const [offset, setOffset] = useState(0);
+
+  const visibleDates = allDates.slice(offset, offset + PAGE * 2);
+  const canGoPrev = offset > 0;
+  const canGoNext = offset + PAGE * 2 < allDates.length;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 select-none">
-      <div className="flex items-center justify-between mb-4">
+    <div className="select-none">
+      <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={() => setViewMonth(m => new Date(m.getFullYear(), m.getMonth() - 1, 1))}
+          onClick={() => setOffset(o => Math.max(0, o - PAGE))}
           disabled={!canGoPrev}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-lg text-gray-400 hover:text-[#0F1C3F] hover:bg-gray-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
+          className="w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-lg text-gray-400 hover:text-[#0F1C3F] hover:bg-gray-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
         >
           ‹
         </button>
-        <span className="font-bold text-[#0F1C3F] text-sm">
-          {MONTH_NAMES[month]} {year}
-        </span>
+
+        <div className="flex-1 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-2 min-w-max sm:grid sm:grid-cols-7 sm:min-w-0">
+            {visibleDates.map(ds => {
+              const [y, m, d] = ds.split('-').map(Number);
+              const date = new Date(y, m - 1, d);
+              const selected = value === ds;
+              return (
+                <button
+                  key={ds}
+                  type="button"
+                  onClick={() => onChange(ds)}
+                  className={`
+                    flex flex-col items-center justify-center gap-0.5
+                    rounded-xl border-2 py-2.5 px-1 w-[52px] sm:w-auto transition-all
+                    ${selected
+                      ? 'bg-[#2DD4A7] border-[#2DD4A7] text-white'
+                      : 'bg-white border-gray-200 text-[#0F1C3F] hover:border-[#2DD4A7]/50 hover:bg-[#2DD4A7]/10'
+                    }
+                  `}
+                >
+                  <span className={`text-[10px] font-semibold uppercase ${selected ? 'text-white/80' : 'text-gray-400'}`}>
+                    {SHORT_DAY[date.getDay()]}
+                  </span>
+                  <span className="text-lg font-extrabold leading-none">{d}</span>
+                  <span className={`text-[10px] font-semibold ${selected ? 'text-white/80' : 'text-gray-400'}`}>
+                    {SHORT_MONTH[m - 1]}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         <button
           type="button"
-          onClick={() => setViewMonth(m => new Date(m.getFullYear(), m.getMonth() + 1, 1))}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-lg text-gray-400 hover:text-[#0F1C3F] hover:bg-gray-100 transition-colors"
+          onClick={() => setOffset(o => o + PAGE)}
+          disabled={!canGoNext}
+          className="w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-lg text-gray-400 hover:text-[#0F1C3F] hover:bg-gray-100 disabled:opacity-25 disabled:cursor-not-allowed transition-colors"
         >
           ›
         </button>
       </div>
 
-      <div className="grid grid-cols-7 mb-1">
-        {DAY_LABELS.map(d => (
-          <div key={d} className="text-center text-[10px] font-semibold text-gray-400 uppercase py-1">
-            {d}
-          </div>
-        ))}
-      </div>
-
-      <p className="text-[10px] text-gray-400 text-center mb-2">Sundays unavailable · Next 60 days only</p>
-
-      <div className="space-y-0.5">
-        {rows.map((row, rowIdx) => {
-          const selectable = rowHasSelectable(row);
-          return (
-            <div key={rowIdx} className="grid grid-cols-7">
-              {row.map((day, colIdx) => {
-                if (day === null) {
-                  return (
-                    <div
-                      key={`empty-${rowIdx}-${colIdx}`}
-                      className={selectable ? 'aspect-square' : 'h-5'}
-                    />
-                  );
-                }
-                const ds = toDateString(day);
-                const disabled = isDisabled(day);
-                const selected = value === ds;
-                return (
-                  <button
-                    key={ds}
-                    type="button"
-                    disabled={disabled}
-                    onClick={() => onChange(ds)}
-                    className={`
-                      ${selectable ? 'aspect-square' : 'h-5'}
-                      rounded-full text-xs font-semibold flex items-center justify-center transition-colors
-                      ${selected
-                        ? 'bg-[#2DD4A7] text-[#0F1C3F]'
-                        : disabled
-                          ? 'text-gray-300 cursor-not-allowed'
-                          : 'bg-[#2DD4A7]/10 text-[#0F1C3F] hover:bg-[#2DD4A7]/20'
-                      }
-                    `}
-                  >
-                    {day}
-                  </button>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
+      <p className="text-[10px] text-gray-400 text-center mt-2">Next 60 days only</p>
     </div>
   );
 }

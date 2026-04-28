@@ -790,13 +790,15 @@ function BookingFormInner() {
               <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-1.5">
                 {[
                   'Kitchen surfaces wiped',
-                  'Bathroom scrubbed',
+                  'Stovetop exterior cleaned',
                   'Vacuum all floors',
                   'Mop hard floors',
                   'Dusting throughout',
+                  'Bathroom scrubbed & toilet sanitized',
+                  'Shower & tub scrubbed',
                   'Mirrors cleaned',
-                  'Trash emptied',
                   'Sinks & fixtures polished',
+                  'Trash emptied',
                 ].map(item => (
                   <div key={item} className="flex items-center gap-1.5 text-xs text-gray-600">
                     <span className="text-[#2DD4A7] font-bold">✓</span>

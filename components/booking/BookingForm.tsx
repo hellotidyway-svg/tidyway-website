@@ -749,9 +749,15 @@ function BookingFormInner() {
         {/* ── Left: form content ── */}
         <div className="w-full lg:w-[60%]">
           {/* Progress bar */}
-          <div className="flex gap-1.5 mb-4">
-            <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
-            <div className="h-1.5 flex-1 rounded-full bg-gray-200" />
+          <div className="mb-4">
+            <div className="flex gap-1.5">
+              <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+              <div className="h-1.5 flex-1 rounded-full bg-gray-200" />
+            </div>
+            <div className="flex gap-1.5 mt-1">
+              <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Your Clean</p>
+              <p className="flex-1 text-center text-[11px] text-gray-400">Date &amp; Payment</p>
+            </div>
           </div>
 
           <h1 className="text-2xl md:text-3xl font-extrabold text-[#0F1C3F] mb-1">
@@ -1027,9 +1033,15 @@ function BookingFormInner() {
         <div className="w-full lg:w-[60%] space-y-7">
           <div>
             {/* Progress bar */}
-            <div className="flex gap-1.5 mb-4">
-              <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
-              <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+            <div className="mb-4">
+              <div className="flex gap-1.5">
+                <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+                <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+              </div>
+              <div className="flex gap-1.5 mt-1">
+                <p className="flex-1 text-center text-[11px] text-gray-400">Your Clean</p>
+                <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Date &amp; Payment</p>
+              </div>
             </div>
             <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1">Schedule & Confirm</h2>
             <p className="text-gray-500 text-sm">Fill in your details to complete your booking.</p>
@@ -1317,6 +1329,7 @@ function BookingFormInner() {
 
           {/* Submit */}
           <div className="pb-8">
+            <p className="text-center text-[12px] text-gray-400 mb-3">🔒 Secure payment · Cancel anytime</p>
             <button
               type="button"
               onClick={handleSubmit}

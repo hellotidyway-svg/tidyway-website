@@ -137,6 +137,15 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
     return `${year}-${mm}-${dd}`;
   };
 
+  // Group flat cell array into rows of 7 for variable row height
+  const rows: (number | null)[][] = [];
+  for (let i = 0; i < cells.length; i += 7) {
+    rows.push(cells.slice(i, i + 7));
+  }
+
+  const rowHasSelectable = (row: (number | null)[]) =>
+    row.some(day => day !== null && !isDisabled(day));
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 select-none">
       <div className="flex items-center justify-between mb-4">
@@ -168,35 +177,50 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-y-0.5">
-        {cells.map((day, i) => {
-          if (day === null) return <div key={`empty-${i}`} className="aspect-square" />;
-          const ds = toDateString(day);
-          const disabled = isDisabled(day);
-          const selected = value === ds;
+      <p className="text-[10px] text-gray-400 text-center mb-2">Sundays unavailable · Next 60 days only</p>
+
+      <div className="space-y-0.5">
+        {rows.map((row, rowIdx) => {
+          const selectable = rowHasSelectable(row);
           return (
-            <button
-              key={ds}
-              type="button"
-              disabled={disabled}
-              onClick={() => onChange(ds)}
-              className={`
-                aspect-square rounded-full text-xs font-semibold flex items-center justify-center transition-colors
-                ${selected
-                  ? 'bg-[#2DD4A7] text-[#0F1C3F]'
-                  : disabled
-                    ? 'text-gray-300 cursor-not-allowed'
-                    : 'text-[#0F1C3F] hover:bg-[#2DD4A7]/20'
+            <div key={rowIdx} className="grid grid-cols-7">
+              {row.map((day, colIdx) => {
+                if (day === null) {
+                  return (
+                    <div
+                      key={`empty-${rowIdx}-${colIdx}`}
+                      className={selectable ? 'aspect-square' : 'h-5'}
+                    />
+                  );
                 }
-              `}
-            >
-              {day}
-            </button>
+                const ds = toDateString(day);
+                const disabled = isDisabled(day);
+                const selected = value === ds;
+                return (
+                  <button
+                    key={ds}
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => onChange(ds)}
+                    className={`
+                      ${selectable ? 'aspect-square' : 'h-5'}
+                      rounded-full text-xs font-semibold flex items-center justify-center transition-colors
+                      ${selected
+                        ? 'bg-[#2DD4A7] text-[#0F1C3F]'
+                        : disabled
+                          ? 'text-gray-300 cursor-not-allowed'
+                          : 'bg-[#2DD4A7]/10 text-[#0F1C3F] hover:bg-[#2DD4A7]/20'
+                      }
+                    `}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
           );
         })}
       </div>
-
-      <p className="text-[10px] text-gray-400 text-center mt-3">Sundays unavailable · Next 60 days only</p>
     </div>
   );
 }

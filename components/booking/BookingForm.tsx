@@ -326,26 +326,40 @@ function TimeSlotButton({
 function TrustSidebar() {
   return (
     <div className="space-y-4">
-      {/* Block 1: Review card */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <div className="flex gap-0.5 mb-3">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-          ))}
-        </div>
-        <p className="text-gray-600 text-sm leading-relaxed mb-4">
-          &ldquo;TidyWay did an incredible job on our home. The team was professional, on time, and the house looked spotless. Will definitely be booking again!&rdquo;
+      {/* Block 1: Aggregate rating + 3-card review stack */}
+      <div>
+        <p className="text-center text-sm font-semibold text-[#0F1C3F] mb-3">
+          <span className="text-[#2DD4A7]">★★★★★</span>
+          {' '}Rated 4.9 by London homeowners
         </p>
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#0F1C3F] text-white text-xs font-bold flex items-center justify-center shrink-0">
-            S
-          </div>
-          <div>
-            <p className="text-xs font-bold text-[#0F1C3F]">Sarah M.</p>
-            <p className="text-[10px] text-[#2DD4A7] font-semibold">Verified Review</p>
-          </div>
+        <div className="space-y-2">
+          {[
+            {
+              quote: 'Absolutely spotless after every visit. I’ve tried other services before but Tidyway is on a completely different level.',
+              name: 'Sarah M.',
+            },
+            {
+              quote: 'Booked online in under two minutes and the cleaner showed up right on time. The whole process was seamless start to finish.',
+              name: 'James R.',
+            },
+            {
+              quote: 'Worth every penny. My apartment has never looked this clean and I love that I didn’t have to make a single phone call.',
+              name: 'Priya K.',
+            },
+          ].map(({ quote, name }) => (
+            <div key={name} className="bg-white rounded-xl border border-gray-100 px-4 py-3">
+              <div className="flex gap-0.5 mb-1.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg key={i} className="w-3 h-3" fill="#2DD4A7" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-gray-600 text-xs leading-relaxed mb-2">&ldquo;{quote}&rdquo;</p>
+              <p className="text-xs text-[#0F1C3F]">{name}</p>
+              <p className="text-[10px] text-gray-400">Verified Review</p>
+            </div>
+          ))}
         </div>
       </div>
 

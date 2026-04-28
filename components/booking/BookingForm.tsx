@@ -786,13 +786,13 @@ function BookingFormInner() {
                       }
                     `}
                   >
-                    {FREQUENCY_LABELS[freq]}
+                    <span>{FREQUENCY_LABELS[freq]}</span>
                     {FREQUENCY_DISCOUNTS[freq] !== null ? (
-                      <span className="block text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
+                      <span className="text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
                         Save {FREQUENCY_DISCOUNTS[freq]}%
                       </span>
                     ) : (
-                      <span className="block text-[10px] mt-0.5 invisible" aria-hidden="true">Save 0%</span>
+                      <span className="text-[10px] mt-0.5 invisible" aria-hidden="true">Save 0%</span>
                     )}
                   </button>
                 </div>

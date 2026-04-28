@@ -142,8 +142,8 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
   };
 
   return (
-    <div className="select-none">
-      <div className="flex items-center gap-2">
+    <div className="select-none w-full">
+      <div className="flex items-center gap-2 w-full">
         <button
           type="button"
           onClick={() => setOffset(o => Math.max(0, o - PAGE))}
@@ -153,8 +153,8 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
           ‹
         </button>
 
-        <div className="flex-1 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-          <div className="flex gap-2" style={{ minWidth: 'max-content' }}>
+        <div style={{ flex: 1, minWidth: 0, overflowX: 'auto', scrollbarWidth: 'none' }}>
+          <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
             {visibleDates.map(ds => {
               const [y, m, d] = ds.split('-').map(Number);
               const date = new Date(y, m - 1, d);
@@ -162,27 +162,16 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
               const label = dayLabel(ds, date.getDay());
               const isSpecial = label === 'Today' || label === 'Tomorrow';
               return (
-                <button
+                <DateChip
                   key={ds}
-                  type="button"
+                  ds={ds}
+                  d={d}
+                  m={m}
+                  label={label}
+                  isSpecial={isSpecial}
+                  selected={selected}
                   onClick={() => onChange(ds)}
-                  className={`
-                    flex flex-col items-center justify-center gap-0.5
-                    rounded-xl border-2 py-2.5 px-1 w-[52px] flex-shrink-0 transition-all
-                    ${selected
-                      ? 'bg-[#1D9E75] border-[#1D9E75] text-white'
-                      : 'bg-white border-gray-200 text-[#0F1C3F] hover:bg-[#E1F5EE] hover:border-[#E1F5EE] hover:text-[#0F6E56]'
-                    }
-                  `}
-                >
-                  <span className={`font-semibold uppercase leading-none ${isSpecial ? 'text-[8px]' : 'text-[10px]'} ${selected ? 'text-white/80' : 'text-gray-400'}`}>
-                    {label}
-                  </span>
-                  <span className="text-lg font-extrabold leading-none">{d}</span>
-                  <span className={`text-[10px] font-semibold ${selected ? 'text-white/80' : 'text-gray-400'}`}>
-                    {SHORT_MONTH[m - 1]}
-                  </span>
-                </button>
+                />
               );
             })}
           </div>
@@ -200,6 +189,75 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
 
       <p className="text-[10px] text-gray-400 text-center mt-2">Next 60 days only</p>
     </div>
+  );
+}
+
+function DateChip({
+  d, m, label, isSpecial, selected, onClick,
+}: {
+  ds: string; d: number; m: number; label: string; isSpecial: boolean; selected: boolean; onClick: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  const chipStyle: React.CSSProperties = selected
+    ? { background: '#1D9E75', color: '#FFFFFF', border: '2px solid #1D9E75', flex: 1, minWidth: 0 }
+    : hovered
+      ? { background: '#E1F5EE', color: '#0F6E56', border: '1px solid #9FE1CB', flex: 1, minWidth: 0 }
+      : { background: '#ffffff', color: '#0F1C3F', border: '1px solid #e5e7eb', flex: 1, minWidth: 0 };
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={chipStyle}
+      className="flex flex-col items-center justify-center gap-0.5 rounded-xl py-2.5 px-1 transition-all"
+    >
+      <span style={{ fontSize: isSpecial ? '8px' : '10px', fontWeight: 600, textTransform: 'uppercase', lineHeight: 1, color: selected ? 'rgba(255,255,255,0.8)' : hovered ? '#0F6E56' : '#9ca3af' }}>
+        {label}
+      </span>
+      <span style={{ fontSize: '18px', fontWeight: 800, lineHeight: 1, color: selected ? '#ffffff' : hovered ? '#0F6E56' : '#0F1C3F' }}>
+        {d}
+      </span>
+      <span style={{ fontSize: '10px', fontWeight: 600, color: selected ? 'rgba(255,255,255,0.8)' : hovered ? '#0F6E56' : '#9ca3af' }}>
+        {SHORT_MONTH[m - 1]}
+      </span>
+    </button>
+  );
+}
+
+// ─── Time Slot Button ─────────────────────────────────────────────────────────
+
+function TimeSlotButton({
+  label, time, selected, onClick,
+}: {
+  slot: TimeSlot; label: string; time: string; selected: boolean; onClick: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  const btnStyle: React.CSSProperties = selected
+    ? { background: '#E1F5EE', color: '#0F6E56', border: '2px solid #1D9E75', flex: 1 }
+    : hovered
+      ? { background: '#f9fafb', color: '#374151', border: '1px solid #d1d5db', flex: 1 }
+      : { background: '#ffffff', color: '#4b5563', border: '1px solid #e5e7eb', flex: 1 };
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={btnStyle}
+      className="flex flex-col items-center justify-center gap-0.5 py-3 px-2 rounded-xl transition-all text-center"
+    >
+      <span style={{ fontSize: '14px', fontWeight: 700, lineHeight: 1, color: selected ? '#0F6E56' : hovered ? '#374151' : '#0F1C3F' }}>
+        {label}
+      </span>
+      <span style={{ fontSize: '11px', lineHeight: 1, marginTop: '2px', color: selected ? '#0F6E56' : '#9ca3af' }}>
+        {time}
+      </span>
+    </button>
   );
 }
 
@@ -768,28 +826,20 @@ function BookingFormInner() {
           {/* Time slot */}
           <section>
             <p className={labelClass}>Arrival Window</p>
-            <div className="grid grid-cols-3 gap-3">
+            <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
               {([
                 { slot: '9:00 AM',  label: 'Morning',   time: '9:00 AM'  },
                 { slot: '12:00 PM', label: 'Midday',    time: '12:00 PM' },
                 { slot: '3:00 PM',  label: 'Afternoon', time: '3:00 PM'  },
               ] as { slot: TimeSlot; label: string; time: string }[]).map(({ slot, label, time }) => (
-                <button
+                <TimeSlotButton
                   key={slot}
-                  type="button"
+                  slot={slot}
+                  label={label}
+                  time={time}
+                  selected={form.timeSlot === slot}
                   onClick={() => set('timeSlot', slot)}
-                  className={`
-                    flex flex-col items-center justify-center gap-0.5
-                    py-3 px-2 rounded-xl border-2 transition-all text-center
-                    ${form.timeSlot === slot
-                      ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
-                    }
-                  `}
-                >
-                  <span className="text-sm font-bold leading-none">{label}</span>
-                  <span className="text-[11px] text-gray-400 leading-none mt-0.5">{time}</span>
-                </button>
+                />
               ))}
             </div>
             {errors.timeSlot && <p className="text-red-500 text-xs mt-1.5">{errors.timeSlot}</p>}

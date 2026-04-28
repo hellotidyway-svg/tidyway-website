@@ -589,16 +589,17 @@ function BookingFormInner() {
       <div className="flex flex-col lg:flex-row gap-8 items-start">
         {/* ── Left: form content ── */}
         <div className="w-full lg:w-[60%]">
-          {/* Item 6: Step progress indicator */}
-          <p className="text-xs font-semibold text-gray-400 mb-2">
-            <span className="text-[#2DD4A7]">Step 1</span> of 2
-          </p>
+          {/* Progress bar */}
+          <div className="flex gap-1.5 mb-4">
+            <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+            <div className="h-1.5 flex-1 rounded-full bg-gray-200" />
+          </div>
 
           <h1 className="text-2xl md:text-3xl font-extrabold text-[#0F1C3F] mb-1">
-            Configure Your Clean
+            Book Your Clean in Under 2 Minutes
           </h1>
           <p className="text-gray-500 text-sm mb-8">
-            Select your home details — your price updates instantly below.
+            No calls, no back-and-forth — pick your details, see your price, and you&apos;re done.
           </p>
 
           {/* Frequency */}
@@ -746,10 +747,11 @@ function BookingFormInner() {
         {/* ── Left: Form fields ── */}
         <div className="w-full lg:w-[60%] space-y-7">
           <div>
-            {/* Item 6: Step progress indicator */}
-            <p className="text-xs font-semibold text-gray-400 mb-2">
-              <span className="text-[#2DD4A7]">Step 2</span> of 2
-            </p>
+            {/* Progress bar */}
+            <div className="flex gap-1.5 mb-4">
+              <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+              <div className="h-1.5 flex-1 rounded-full bg-[#2DD4A7]" />
+            </div>
             <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1">Schedule & Confirm</h2>
             <p className="text-gray-500 text-sm">Fill in your details to complete your booking.</p>
           </div>

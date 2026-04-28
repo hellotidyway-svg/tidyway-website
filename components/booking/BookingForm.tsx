@@ -98,6 +98,12 @@ const labelClass = 'block text-xs font-semibold text-gray-500 uppercase tracking
 const SHORT_DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const SHORT_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+function toYMD(date: Date): string {
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${mm}-${dd}`;
+}
+
 function buildAvailableDates(): string[] {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -107,11 +113,7 @@ function buildAvailableDates(): string[] {
   const cursor = new Date(today);
   cursor.setDate(cursor.getDate() + 1);
   while (cursor <= maxDate) {
-    if (cursor.getDay() !== 0) {
-      const mm = String(cursor.getMonth() + 1).padStart(2, '0');
-      const dd = String(cursor.getDate()).padStart(2, '0');
-      dates.push(`${cursor.getFullYear()}-${mm}-${dd}`);
-    }
+    if (cursor.getDay() !== 0) dates.push(toYMD(cursor));
     cursor.setDate(cursor.getDate() + 1);
   }
   return dates;
@@ -122,9 +124,22 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
   const PAGE = 7;
   const [offset, setOffset] = useState(0);
 
-  const visibleDates = allDates.slice(offset, offset + PAGE * 2);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const todayStr = toYMD(today);
+  const tomorrowStr = toYMD(tomorrow);
+
+  const visibleDates = allDates.slice(offset, offset + PAGE);
   const canGoPrev = offset > 0;
-  const canGoNext = offset + PAGE * 2 < allDates.length;
+  const canGoNext = offset + PAGE < allDates.length;
+
+  const dayLabel = (ds: string, dayIndex: number) => {
+    if (ds === todayStr) return 'Today';
+    if (ds === tomorrowStr) return 'Tomorrow';
+    return SHORT_DAY[dayIndex].toUpperCase();
+  };
 
   return (
     <div className="select-none">
@@ -138,12 +153,14 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
           ‹
         </button>
 
-        <div className="flex-1 overflow-x-auto scrollbar-hide">
-          <div className="flex gap-2 min-w-max sm:grid sm:grid-cols-7 sm:min-w-0">
+        <div className="flex-1 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+          <div className="flex gap-2" style={{ minWidth: 'max-content' }}>
             {visibleDates.map(ds => {
               const [y, m, d] = ds.split('-').map(Number);
               const date = new Date(y, m - 1, d);
               const selected = value === ds;
+              const label = dayLabel(ds, date.getDay());
+              const isSpecial = label === 'Today' || label === 'Tomorrow';
               return (
                 <button
                   key={ds}
@@ -151,15 +168,15 @@ function CalendarPicker({ value, onChange }: { value: string; onChange: (d: stri
                   onClick={() => onChange(ds)}
                   className={`
                     flex flex-col items-center justify-center gap-0.5
-                    rounded-xl border-2 py-2.5 px-1 w-[52px] sm:w-auto transition-all
+                    rounded-xl border-2 py-2.5 px-1 w-[52px] flex-shrink-0 transition-all
                     ${selected
-                      ? 'bg-[#2DD4A7] border-[#2DD4A7] text-white'
-                      : 'bg-white border-gray-200 text-[#0F1C3F] hover:border-[#2DD4A7]/50 hover:bg-[#2DD4A7]/10'
+                      ? 'bg-[#1D9E75] border-[#1D9E75] text-white'
+                      : 'bg-white border-gray-200 text-[#0F1C3F] hover:bg-[#E1F5EE] hover:border-[#E1F5EE] hover:text-[#0F6E56]'
                     }
                   `}
                 >
-                  <span className={`text-[10px] font-semibold uppercase ${selected ? 'text-white/80' : 'text-gray-400'}`}>
-                    {SHORT_DAY[date.getDay()]}
+                  <span className={`font-semibold uppercase leading-none ${isSpecial ? 'text-[8px]' : 'text-[10px]'} ${selected ? 'text-white/80' : 'text-gray-400'}`}>
+                    {label}
                   </span>
                   <span className="text-lg font-extrabold leading-none">{d}</span>
                   <span className={`text-[10px] font-semibold ${selected ? 'text-white/80' : 'text-gray-400'}`}>
@@ -752,20 +769,26 @@ function BookingFormInner() {
           <section>
             <p className={labelClass}>Arrival Window</p>
             <div className="grid grid-cols-3 gap-3">
-              {TIME_SLOTS.map(slot => (
+              {([
+                { slot: '9:00 AM',  label: 'Morning',   time: '9:00 AM'  },
+                { slot: '12:00 PM', label: 'Midday',    time: '12:00 PM' },
+                { slot: '3:00 PM',  label: 'Afternoon', time: '3:00 PM'  },
+              ] as { slot: TimeSlot; label: string; time: string }[]).map(({ slot, label, time }) => (
                 <button
                   key={slot}
                   type="button"
                   onClick={() => set('timeSlot', slot)}
                   className={`
-                    py-3 px-2 rounded-xl border-2 text-sm font-bold transition-all text-center
+                    flex flex-col items-center justify-center gap-0.5
+                    py-3 px-2 rounded-xl border-2 transition-all text-center
                     ${form.timeSlot === slot
                       ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
                     }
                   `}
                 >
-                  {slot}
+                  <span className="text-sm font-bold leading-none">{label}</span>
+                  <span className="text-[11px] text-gray-400 leading-none mt-0.5">{time}</span>
                 </button>
               ))}
             </div>

@@ -779,7 +779,7 @@ function BookingFormInner() {
                     type="button"
                     onClick={() => set('frequency', freq)}
                     className={`
-                      w-full py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center
+                      w-full py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center flex flex-col items-center justify-center
                       ${form.frequency === freq
                         ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
                         : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'

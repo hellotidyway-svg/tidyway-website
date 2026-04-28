@@ -31,6 +31,13 @@ export const BATHROOM_OPTIONS: Bathrooms[] = ['1', '1.5', '2', '2.5', '3', '3.5'
 
 export const ADD_ONS: AddOn[] = [
   {
+    id: 'deep-cleaning',
+    label: 'Deep Cleaning',
+    description: 'Thorough top-to-bottom clean of every room and surface',
+    price: 125,
+    durationMinutes: 120,
+  },
+  {
     id: 'oven',
     label: 'Inside Oven',
     description: 'Deep clean oven interior, racks & door',
@@ -41,29 +48,29 @@ export const ADD_ONS: AddOn[] = [
     id: 'fridge',
     label: 'Inside Fridge',
     description: 'Wipe shelves, drawers & door seals',
-    price: 30,
-    durationMinutes: 20,
-  },
-  {
-    id: 'windows',
-    label: 'Interior Windows',
-    description: 'Clean glass panes & sills throughout',
-    price: 45,
-    durationMinutes: 45,
-  },
-  {
-    id: 'laundry',
-    label: 'Laundry (Wash & Fold)',
-    description: 'Wash, dry & fold one load of laundry',
-    price: 40,
+    price: 25,
     durationMinutes: 30,
   },
   {
     id: 'cabinets',
     label: 'Inside Cabinets',
     description: 'Empty and wipe all cabinet interiors',
-    price: 50,
+    price: 40,
     durationMinutes: 45,
+  },
+  {
+    id: 'windows',
+    label: 'Interior Windows',
+    description: 'Clean glass panes & sills throughout',
+    price: 40,
+    durationMinutes: 45,
+  },
+  {
+    id: 'pet-hair',
+    label: 'Heavy Pet Hair Removal',
+    description: 'Deep removal of pet hair from furniture, carpets & surfaces',
+    price: 25,
+    durationMinutes: 30,
   },
   {
     id: 'balcony',
@@ -73,11 +80,11 @@ export const ADD_ONS: AddOn[] = [
     durationMinutes: 30,
   },
   {
-    id: 'eco',
-    label: 'Eco-Friendly Products',
-    description: 'All-natural, non-toxic cleaning products',
-    price: 15,
-    durationMinutes: 0,
+    id: 'move',
+    label: 'Move In / Move Out',
+    description: 'Comprehensive clean for an empty home before or after a move',
+    price: 120,
+    durationMinutes: 180,
   },
 ];
 

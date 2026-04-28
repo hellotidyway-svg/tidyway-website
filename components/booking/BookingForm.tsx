@@ -85,6 +85,64 @@ const HOME_ACCESS_OPTIONS: { value: HomeAccess; label: string }[] = [
 
 const CA_PROVINCES = ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT'];
 
+// ─── Add-on Icons ─────────────────────────────────────────────────────────────
+
+const ADDON_ICONS: Record<string, JSX.Element> = {
+  'deep-cleaning': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.64 3.64l1.42 1.42M10.94 10.94l1.42 1.42M3.64 12.36l1.42-1.42M10.94 5.06l1.42-1.42" stroke="#2DD4A7" strokeWidth="1.5" strokeLinecap="round"/>
+      <circle cx="8" cy="8" r="2" fill="#2DD4A7"/>
+    </svg>
+  ),
+  'oven': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 13.5C5.5 13.5 3.5 11.8 3.5 9.5c0-1.4.7-2.4 1.4-3 0 1 .5 1.5 1 1.5-.5-2 1-4 3.6-5.5-.5 2 .5 3 1 3.5.5-1 .5-2 0-3C12 4.3 12.5 6.5 12.5 9.5c0 2.3-2 4-4.5 4z" fill="#2DD4A7" fillOpacity="0.25" stroke="#2DD4A7" strokeWidth="1.2" strokeLinejoin="round"/>
+    </svg>
+  ),
+  'fridge': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 2v12M2 8h12M5.17 5.17l5.66 5.66M10.83 5.17l-5.66 5.66" stroke="#2DD4A7" strokeWidth="1.5" strokeLinecap="round"/>
+      <circle cx="8" cy="8" r="1.5" fill="#2DD4A7"/>
+    </svg>
+  ),
+  'cabinets': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect x="2" y="2" width="5" height="5" rx="1" stroke="#2DD4A7" strokeWidth="1.5"/>
+      <rect x="9" y="2" width="5" height="5" rx="1" stroke="#2DD4A7" strokeWidth="1.5"/>
+      <rect x="2" y="9" width="5" height="5" rx="1" stroke="#2DD4A7" strokeWidth="1.5"/>
+      <rect x="9" y="9" width="5" height="5" rx="1" stroke="#2DD4A7" strokeWidth="1.5"/>
+    </svg>
+  ),
+  'windows': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect x="2" y="2" width="12" height="12" rx="1.5" stroke="#2DD4A7" strokeWidth="1.5"/>
+      <path d="M8 2v12M2 8h12" stroke="#2DD4A7" strokeWidth="1.2" strokeLinecap="round"/>
+    </svg>
+  ),
+  'pet-hair': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <ellipse cx="5.5" cy="4" rx="1.3" ry="1.8" fill="#2DD4A7"/>
+      <ellipse cx="10.5" cy="4" rx="1.3" ry="1.8" fill="#2DD4A7"/>
+      <ellipse cx="3" cy="7.5" rx="1" ry="1.6" fill="#2DD4A7"/>
+      <ellipse cx="13" cy="7.5" rx="1" ry="1.6" fill="#2DD4A7"/>
+      <path d="M8 7c-2 0-4 1.5-4 3.5 0 2 1.5 3.5 4 3.5s4-1.5 4-3.5C12 8.5 10 7 8 7z" fill="#2DD4A7" fillOpacity="0.8"/>
+    </svg>
+  ),
+  'balcony': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M2 8.5C2 5.46 4.69 3 8 3s6 2.46 6 5.5H2z" fill="#2DD4A7" fillOpacity="0.25" stroke="#2DD4A7" strokeWidth="1.5" strokeLinejoin="round"/>
+      <path d="M8 8.5v4c0 .55.45 1 1 1" stroke="#2DD4A7" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  ),
+  'move': (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect x="2" y="7" width="12" height="7" rx="1" stroke="#2DD4A7" strokeWidth="1.5"/>
+      <path d="M5 7V5a3 3 0 016 0v2" stroke="#2DD4A7" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M5.5 11h5" stroke="#2DD4A7" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  ),
+};
+
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const inputBase =
@@ -522,12 +580,36 @@ function BookingFormInner() {
   }, []);
 
   const toggleAddOn = (id: string) => {
-    setForm(prev => ({
-      ...prev,
-      addOnIds: prev.addOnIds.includes(id)
-        ? prev.addOnIds.filter(a => a !== id)
-        : [...prev.addOnIds, id],
-    }));
+    setForm(prev => {
+      const comboActive = prev.addOnIds.includes('combo-oven-fridge');
+      if (comboActive && (id === 'oven' || id === 'fridge')) {
+        // Break combo: keep the other individual add-on, remove this one
+        const other = id === 'oven' ? 'fridge' : 'oven';
+        return {
+          ...prev,
+          addOnIds: [...prev.addOnIds.filter(a => a !== 'combo-oven-fridge' && a !== 'oven' && a !== 'fridge'), other],
+        };
+      }
+      return {
+        ...prev,
+        addOnIds: prev.addOnIds.includes(id)
+          ? prev.addOnIds.filter(a => a !== id)
+          : [...prev.addOnIds, id],
+      };
+    });
+  };
+
+  const toggleCombo = () => {
+    setForm(prev => {
+      const comboActive = prev.addOnIds.includes('combo-oven-fridge');
+      if (comboActive) {
+        return { ...prev, addOnIds: prev.addOnIds.filter(a => a !== 'combo-oven-fridge') };
+      }
+      return {
+        ...prev,
+        addOnIds: [...prev.addOnIds.filter(a => a !== 'oven' && a !== 'fridge'), 'combo-oven-fridge'],
+      };
+    });
   };
 
   const transitionTo = (nextStep: 1 | 2) => {
@@ -815,9 +897,56 @@ function BookingFormInner() {
               Add-ons{' '}
               <span className="normal-case text-gray-400 font-normal tracking-normal">(optional)</span>
             </p>
+
+            {/* Popular Combo Card */}
+            {(() => {
+              const comboSelected = form.addOnIds.includes('combo-oven-fridge');
+              return (
+                <button
+                  type="button"
+                  onClick={toggleCombo}
+                  className={`
+                    w-full text-left p-4 rounded-xl border-2 mb-3 transition-all
+                    ${comboSelected
+                      ? 'border-[#2DD4A7] bg-[#2DD4A7]/10'
+                      : 'border-[#2DD4A7]/40 bg-white hover:border-[#2DD4A7]'
+                    }
+                  `}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="mb-1">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#2DD4A7] text-[#0F1C3F] text-[9px] font-extrabold uppercase tracking-wide">
+                          Popular Combo
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <path d="M8 13.5C5.5 13.5 3.5 11.8 3.5 9.5c0-1.4.7-2.4 1.4-3 0 1 .5 1.5 1 1.5-.5-2 1-4 3.6-5.5-.5 2 .5 3 1 3.5.5-1 .5-2 0-3 1.6 1.2 2.5 3 2.5 5 0 2.3-2 4-4.5 4z" fill="#2DD4A7" fillOpacity="0.3" stroke="#2DD4A7" strokeWidth="1.2" strokeLinejoin="round"/>
+                        </svg>
+                        <p className="font-bold text-[#0F1C3F] text-sm">Oven + Fridge</p>
+                      </div>
+                      <p className="text-gray-500 text-xs mt-0.5 leading-relaxed">Most requested add-on pair</p>
+                      <p className="text-gray-400 text-xs mt-1">+1 hr</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="font-extrabold text-[#0F1C3F] text-sm">+$55</p>
+                      <p className="text-[#2DD4A7] text-xs font-semibold">Save $5</p>
+                      {comboSelected && (
+                        <span className="text-[#2DD4A7] text-xs font-bold">✓ Added</span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })()}
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ADD_ONS.map(addon => {
-                const selected = form.addOnIds.includes(addon.id);
+              {ADD_ONS.filter(a => a.id !== 'combo-oven-fridge').map(addon => {
+                const comboSelected = form.addOnIds.includes('combo-oven-fridge');
+                const selected =
+                  form.addOnIds.includes(addon.id) ||
+                  (comboSelected && (addon.id === 'oven' || addon.id === 'fridge'));
                 return (
                   <button
                     key={addon.id}
@@ -833,7 +962,10 @@ function BookingFormInner() {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="font-bold text-[#0F1C3F] text-sm">{addon.label}</p>
+                        <div className="flex items-center gap-1.5">
+                          <span className="shrink-0">{ADDON_ICONS[addon.id]}</span>
+                          <p className="font-bold text-[#0F1C3F] text-sm">{addon.label}</p>
+                        </div>
                         <p className="text-gray-500 text-xs mt-0.5 leading-relaxed">{addon.description}</p>
                         {addon.durationMinutes > 0 && (
                           <p className="text-gray-400 text-xs mt-1">+{addon.durationMinutes} min</p>

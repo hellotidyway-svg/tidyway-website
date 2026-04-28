@@ -86,6 +86,13 @@ export const ADD_ONS: AddOn[] = [
     price: 120,
     durationMinutes: 180,
   },
+  {
+    id: 'combo-oven-fridge',
+    label: 'Oven + Fridge Combo',
+    description: 'Oven interior deep clean + fridge wipe-down at a combined rate',
+    price: 55,
+    durationMinutes: 60,
+  },
 ];
 
 const BASE_PRICES: Record<Bedrooms, number> = {

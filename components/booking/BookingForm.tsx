@@ -779,7 +779,7 @@ function BookingFormInner() {
                     type="button"
                     onClick={() => set('frequency', freq)}
                     className={`
-                      w-full py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center flex flex-col items-center justify-center
+                      w-full h-full py-3 px-3 rounded-xl border-2 text-sm font-bold transition-all text-center flex flex-col items-center justify-center
                       ${form.frequency === freq
                         ? 'border-[#2DD4A7] bg-[#2DD4A7]/10 text-[#0F1C3F]'
                         : 'border-gray-200 bg-white text-gray-600 hover:border-[#2DD4A7]/50'
@@ -787,12 +787,10 @@ function BookingFormInner() {
                     `}
                   >
                     <span>{FREQUENCY_LABELS[freq]}</span>
-                    {FREQUENCY_DISCOUNTS[freq] !== null ? (
+                    {FREQUENCY_DISCOUNTS[freq] !== null && (
                       <span className="text-[10px] font-semibold text-[#2DD4A7] mt-0.5">
                         Save {FREQUENCY_DISCOUNTS[freq]}%
                       </span>
-                    ) : (
-                      <span className="text-[10px] mt-0.5 invisible" aria-hidden="true">Save 0%</span>
                     )}
                   </button>
                 </div>

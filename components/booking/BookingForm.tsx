@@ -341,16 +341,16 @@ function TrustSidebar() {
         <div className="space-y-2">
           {[
             {
-              quote: ‘Absolutely spotless after every visit. I’ve tried other services before but Tidyway is on a completely different level.’,
-              name: ‘Sarah M. · London, ON’,
+              quote: "Absolutely spotless after every visit. I’ve tried other services before but Tidyway is on a completely different level.",
+              name: "Sarah M. · London, ON",
             },
             {
-              quote: ‘Booked online in under two minutes and the cleaner showed up right on time. The whole process was seamless start to finish.’,
-              name: ‘James R. · London, ON’,
+              quote: "Booked online in under two minutes and the cleaner showed up right on time. The whole process was seamless start to finish.",
+              name: "James R. · London, ON",
             },
             {
-              quote: ‘Worth every penny. My apartment has never looked this clean and I love that I didn’t have to make a single phone call.’,
-              name: ‘Priya K. · London, ON’,
+              quote: "Worth every penny. My apartment has never looked this clean and I love that I didn’t have to make a single phone call.",
+              name: "Priya K. · London, ON",
             },
           ].map(({ quote, name }) => (
             <div key={name} className="bg-white rounded-xl border border-gray-100 px-4 py-3">

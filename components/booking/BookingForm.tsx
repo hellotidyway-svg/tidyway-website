@@ -1082,8 +1082,8 @@ function BookingFormInner() {
             {/* Slot hold countdown banner */}
             {slotExpired ? (
               <div
-                className="mt-4 flex items-center justify-center gap-2.5 w-full px-5 rounded-full text-[14px] text-white"
-                style={{ height: '40px', background: '#b45309' }}
+                className="mt-4 flex items-center justify-center gap-2.5 w-full px-5 rounded-[10px] text-[14px] text-white"
+                style={{ height: '34px', background: '#b45309' }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.9 }}>
                   <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
@@ -1092,8 +1092,8 @@ function BookingFormInner() {
               </div>
             ) : (
               <div
-                className="mt-4 flex items-center justify-center gap-2.5 w-full px-5 rounded-full text-[14px] text-white"
-                style={{ height: '40px', background: '#0F1C3F' }}
+                className="mt-4 flex items-center justify-center gap-2.5 w-full px-5 rounded-[10px] text-[14px] text-white"
+                style={{ height: '34px', background: '#0F1C3F' }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.7 }}>
                   <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
@@ -1103,7 +1103,7 @@ function BookingFormInner() {
               </div>
             )}
 
-            <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1">Schedule & Confirm</h2>
+            <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1 mt-5">Schedule & Confirm</h2>
             <p className="text-gray-500 text-sm">Fill in your details to complete your booking.</p>
           </div>
 

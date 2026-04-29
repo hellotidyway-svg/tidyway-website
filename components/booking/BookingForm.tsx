@@ -341,16 +341,16 @@ function TrustSidebar() {
         <div className="space-y-2">
           {[
             {
-              quote: 'Absolutely spotless after every visit. I’ve tried other services before but Tidyway is on a completely different level.',
-              name: 'Sarah M.',
+              quote: ‘Absolutely spotless after every visit. I’ve tried other services before but Tidyway is on a completely different level.’,
+              name: ‘Sarah M. · London, ON’,
             },
             {
-              quote: 'Booked online in under two minutes and the cleaner showed up right on time. The whole process was seamless start to finish.',
-              name: 'James R.',
+              quote: ‘Booked online in under two minutes and the cleaner showed up right on time. The whole process was seamless start to finish.’,
+              name: ‘James R. · London, ON’,
             },
             {
-              quote: 'Worth every penny. My apartment has never looked this clean and I love that I didn’t have to make a single phone call.',
-              name: 'Priya K.',
+              quote: ‘Worth every penny. My apartment has never looked this clean and I love that I didn’t have to make a single phone call.’,
+              name: ‘Priya K. · London, ON’,
             },
           ].map(({ quote, name }) => (
             <div key={name} className="bg-white rounded-xl border border-gray-100 px-4 py-3">
@@ -369,23 +369,13 @@ function TrustSidebar() {
         </div>
       </div>
 
-      {/* Block 2: Why TidyWay */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <p className="text-xs font-extrabold text-[#0F1C3F] uppercase tracking-wider mb-3">Why TidyWay?</p>
-        {[
-          'Background-checked cleaners',
-          '$2M liability insurance',
-          'Happiness Guarantee or Free Reclean',
-          'Same cleaner every visit',
-          '24hr cancellation policy',
-        ].map(point => (
-          <div key={point} className="flex items-center gap-2.5 py-1.5">
-            <span className="w-4 h-4 rounded-full bg-[#2DD4A7]/20 text-[#2DD4A7] text-[10px] font-bold flex items-center justify-center shrink-0">
-              ✓
-            </span>
-            <span className="text-gray-700 text-xs">{point}</span>
-          </div>
-        ))}
+      {/* Block 2: Guarantee pill */}
+      <div className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#f0fdf9] border border-[#2DD4A7]/30">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2DD4A7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <polyline points="9 12 11 14 15 10" />
+        </svg>
+        <span className="text-[14px] text-[#0F1C3F]">Not happy? We&apos;ll reclean for free — no questions asked.</span>
       </div>
 
       {/* Block 3: Questions */}
@@ -791,7 +781,7 @@ function BookingFormInner() {
             </div>
             <div className="flex gap-1.5 mt-1">
               <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Booking Information</p>
-              <p className="flex-1 text-center text-[11px] text-gray-400">Select Date &amp; Time</p>
+              <p className="flex-1 text-center text-[11px] text-gray-400">Check Availability</p>
             </div>
           </div>
 
@@ -1075,7 +1065,7 @@ function BookingFormInner() {
               </div>
               <div className="flex gap-1.5 mt-1">
                 <p className="flex-1 text-center text-[11px] text-gray-400">Booking Information</p>
-                <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Select Date &amp; Time</p>
+                <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Check Availability</p>
               </div>
             </div>
 
@@ -1484,7 +1474,7 @@ function BookingFormInner() {
                   }
                 `}
               >
-                Select Date &amp; Time →
+                Check Availability →
               </button>
             </div>
           </div>

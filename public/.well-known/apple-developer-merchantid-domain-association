@@ -1,0 +1,9 @@
+TODO: Replace this entire file with the real domain association file from the Stripe dashboard.
+
+To get the file content:
+  1. Go to Stripe Dashboard → Settings → Payment Methods → Apple Pay
+  2. Click "Add a new domain" and enter your production domain (e.g. tidyway.ca)
+  3. Download the domain association file Stripe provides
+  4. Replace the contents of this file with that downloaded content (no extension, no JSON wrapping — paste the raw text exactly as downloaded)
+
+Apple Pay will NOT work in production until this file contains the real Stripe-issued content.

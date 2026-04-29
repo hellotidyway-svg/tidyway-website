@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useRouter } from 'next/navigation';
 import {
   ADD_ONS,
@@ -693,12 +693,6 @@ function BookingFormInner() {
     if (!validate()) return;
     if (!stripe || !elements) return;
 
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      setErrors(prev => ({ ...prev, card: 'Card details are required' }));
-      return;
-    }
-
     setIsSubmitting(true);
     setErrors({});
 
@@ -714,9 +708,14 @@ function BookingFormInner() {
 
       const { clientSecret, customerId } = siData;
 
-      // 2. Confirm card setup (tokenises the card)
-      const { error: stripeError, setupIntent } = await stripe.confirmCardSetup(clientSecret, {
-        payment_method: { card: cardElement },
+      // 2. Confirm setup via PaymentElement (handles card, Apple Pay, and Google Pay)
+      // Note: Apple Pay requires HTTPS + verified domain (won't work on localhost).
+      //       Google Pay can be tested on localhost in Stripe test mode.
+      const { error: stripeError, setupIntent } = await stripe.confirmSetup({
+        elements,
+        clientSecret,
+        confirmParams: { return_url: `${window.location.origin}/booking-confirmed` },
+        redirect: 'if_required',
       });
 
       if (stripeError) {
@@ -1315,33 +1314,18 @@ function BookingFormInner() {
             />
           </section>
 
-          {/* Stripe card element — Items 3 & 4 */}
+          {/* Stripe Payment Element — wallet buttons (Apple Pay / Google Pay) + card form */}
           <section>
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">
                 Secure Your Booking
               </p>
-              <div
-                className={`border rounded-lg px-4 py-3.5 bg-white transition-colors ${
-                  errors.card ? 'border-red-400' : 'border-gray-200'
-                }`}
-                style={{ position: 'relative', zIndex: 10, pointerEvents: 'auto' }}
-              >
-                <CardElement
-                  options={{
-                    style: {
-                      base: {
-                        fontSize: '16px',
-                        color: '#0F1C3F',
-                        fontFamily: 'Inter, sans-serif',
-                        '::placeholder': { color: '#9ca3af' },
-                      },
-                      invalid: { color: '#ef4444' },
-                    },
-                  }}
-                  onChange={() => setErrors(prev => ({ ...prev, card: undefined }))}
-                />
-              </div>
+              {/* Stripe renders wallet buttons above an "Or pay by card" divider automatically */}
+              <PaymentElement
+                options={{
+                  wallets: { applePay: 'auto', googlePay: 'auto' },
+                }}
+              />
               {errors.card && (
                 <p className="text-red-500 text-xs mt-1.5">{errors.card}</p>
               )}
@@ -1498,7 +1482,14 @@ function BookingFormInner() {
 
 export default function BookingForm() {
   return (
-    <Elements stripe={stripePromise}>
+    <Elements
+      stripe={stripePromise}
+      options={{
+        mode: 'setup',
+        currency: 'cad',
+        setup_future_usage: 'off_session',
+      }}
+    >
       <BookingFormInner />
     </Elements>
   );

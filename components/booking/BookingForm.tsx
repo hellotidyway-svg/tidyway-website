@@ -1078,6 +1078,41 @@ function BookingFormInner() {
                 <p className="flex-1 text-center text-[11px] font-medium text-[#0F1C3F]">Select Date &amp; Time</p>
               </div>
             </div>
+
+            {/* Slot hold countdown banner */}
+            {slotExpired ? (
+              <div
+                className="mt-4 flex items-center gap-3 w-full px-4 rounded-lg text-[14px]"
+                style={{
+                  height: '44px',
+                  background: 'rgba(251,191,36,0.09)',
+                  borderLeft: '3px solid rgba(217,119,6,0.6)',
+                  color: '#92400e',
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.8 }}>
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                Your hold has expired — please select a date and time to continue
+              </div>
+            ) : (
+              <div
+                className="mt-4 flex items-center gap-3 w-full px-4 rounded-lg text-[14px]"
+                style={{
+                  height: '44px',
+                  background: 'rgba(45,212,167,0.08)',
+                  borderLeft: '3px solid rgba(45,212,167,0.55)',
+                  color: '#0d9488',
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, opacity: 0.75 }}>
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+                Your slot is held for{' '}
+                <span style={{ fontWeight: 600 }}>{formatCountdown(timerSeconds)}</span>
+              </div>
+            )}
+
             <h2 className="text-2xl font-extrabold text-[#0F1C3F] mb-1">Schedule & Confirm</h2>
             <p className="text-gray-500 text-sm">Fill in your details to complete your booking.</p>
           </div>
@@ -1110,31 +1145,6 @@ function BookingFormInner() {
             </div>
             {errors.timeSlot && <p className="text-red-500 text-xs mt-1.5">{errors.timeSlot}</p>}
           </section>
-
-          {/* Slot hold countdown */}
-          <div>
-            {slotExpired ? (
-              <div
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-medium"
-                style={{ background: 'rgba(251,191,36,0.10)', color: '#b45309', border: '1px solid rgba(251,191,36,0.35)' }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-                </svg>
-                Your hold has expired — please select a date and time to continue
-              </div>
-            ) : (
-              <div
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-medium"
-                style={{ background: 'rgba(45,212,167,0.08)', color: '#0d9488', border: '1px solid rgba(45,212,167,0.28)' }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-                </svg>
-                Your selected slot is held for {formatCountdown(timerSeconds)}
-              </div>
-            )}
-          </div>
 
           {/* Name */}
           <section>

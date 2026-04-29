@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useRouter } from 'next/navigation';
@@ -155,6 +155,12 @@ const labelClass = 'block text-xs font-semibold text-gray-500 uppercase tracking
 
 const SHORT_DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const SHORT_MONTH = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function formatCountdown(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
 
 function toYMD(date: Date): string {
   const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -572,6 +578,34 @@ function BookingFormInner() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [includedOpen, setIncludedOpen] = useState(false);
 
+  const [timerSeconds, setTimerSeconds] = useState(600);
+  const [slotExpired, setSlotExpired] = useState(false);
+  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startSlotTimer = useCallback(() => {
+    if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+    setTimerSeconds(600);
+    setSlotExpired(false);
+    let s = 600;
+    timerIntervalRef.current = setInterval(() => {
+      s--;
+      setTimerSeconds(s);
+      if (s === 0) {
+        clearInterval(timerIntervalRef.current!);
+        timerIntervalRef.current = null;
+        setSlotExpired(true);
+      }
+    }, 1000);
+  }, []);
+
+  const prevDateRef = useRef(form.date);
+  useEffect(() => {
+    if (step === 2 && form.date && prevDateRef.current !== form.date) {
+      startSlotTimer();
+    }
+    prevDateRef.current = form.date;
+  }, [form.date, step, startSlotTimer]);
+
   const priceInput = {
     bedrooms: form.bedrooms,
     bathrooms: form.bathrooms,
@@ -632,6 +666,7 @@ function BookingFormInner() {
       setStep(nextStep);
       setIsVisible(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (nextStep === 2) startSlotTimer();
     }, 200);
   };
 
@@ -1076,6 +1111,31 @@ function BookingFormInner() {
             {errors.timeSlot && <p className="text-red-500 text-xs mt-1.5">{errors.timeSlot}</p>}
           </section>
 
+          {/* Slot hold countdown */}
+          <div>
+            {slotExpired ? (
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-medium"
+                style={{ background: 'rgba(251,191,36,0.10)', color: '#b45309', border: '1px solid rgba(251,191,36,0.35)' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                Your hold has expired — please select a date and time to continue
+              </div>
+            ) : (
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-medium"
+                style={{ background: 'rgba(45,212,167,0.08)', color: '#0d9488', border: '1px solid rgba(45,212,167,0.28)' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                </svg>
+                Your selected slot is held for {formatCountdown(timerSeconds)}
+              </div>
+            )}
+          </div>
+
           {/* Name */}
           <section>
             <p className={labelClass}>Your Name</p>
@@ -1333,10 +1393,10 @@ function BookingFormInner() {
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={isSubmitting || !stripe}
+              disabled={isSubmitting || !stripe || slotExpired}
               className={`
                 w-full font-extrabold py-4 rounded-xl text-lg transition-colors flex flex-col items-center gap-0.5
-                ${isSubmitting || !stripe
+                ${isSubmitting || !stripe || slotExpired
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   : 'bg-[#2DD4A7] hover:bg-[#22c497] text-white'
                 }
